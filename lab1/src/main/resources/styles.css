@@ -1,0 +1,12 @@
+.chart-symbol {
+  -fx-padding: 1px;
+  /*-fx-background-color: #7b98ae;*/
+  -fx-background-radius: 5px;
+}
+
+.default-color0.chart-legend-item-symbol, .default-color1.chart-legend-item-symbol {
+  -fx-padding: 5px;
+}
+
+.default-color0.chart-series-line { -fx-background-color: #7b98ae; }
+.default-color1.chart-series-line { -fx-background-color: #f0e68c; }
