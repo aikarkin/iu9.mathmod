@@ -12,6 +12,7 @@ import org.apache.commons.math3.linear.RealVector;
 import ru.bmstu.iu9.mathmod.balistics.BalisticsUtils;
 import ru.bmstu.iu9.mathmod.commons.ParamEq;
 import ru.bmstu.iu9.mathmod.commons.RungeKuttaAlgo;
+import ru.bmstu.iu9.mathmod.commons.RungeKuttaPredicate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -89,6 +90,13 @@ public class GUIManager {
     private void createNewtonChart(double startSpeed, double startAngle, double timeDelta, double beta, double radius, double density) {
         final double mass = 4.0 / 3.0 * PI * density * pow(radius, 3.0);
 
+        // ...
+        // mass - масса тела
+        // startSpeed, startAngle - начальное значение скорости и угла соотвевенно
+        // timeDelta - шаг изменения времени на каждой итерации м. Рунге-Кутта
+        // beta - коэффициент сопротивления воздуха
+
+        // векторная функция правых частей системы (6)
         ParamEq func = (t, vec) -> {
             RealVector resVec = new ArrayRealVector(vec.getDimension());
 
@@ -103,14 +111,23 @@ public class GUIManager {
             return resVec;
         };
 
+        // стартовая точка
         RealVector rkStartPoint = MatrixUtils.createRealVector(new double[]{
-                0.0,
-                0.0,
-                startSpeed * cos(startAngle),
-                startSpeed * sin(startAngle)
+                0.0, // x0
+                0.0, // y0
+                startSpeed * cos(startAngle), // v_0x
+                startSpeed * sin(startAngle)  // v_0y
         });
 
-        List<RealVector> rkRes = RungeKuttaAlgo.rungeKutta(func, (t, yPrev, y) -> (y.getEntry(1) <= 0), rkStartPoint, timeDelta);
+        /* предикат завершениа м. Рунге-Кутта - падение тела на землю:
+         * высота стала нулевой или отрицательной (?!) */
+        RungeKuttaPredicate terminationPredicate = (t, yPrev, y) ->
+                y.getEntry(1) <= 0;
+
+
+        List<RealVector> rkRes = RungeKuttaAlgo.rungeKutta(func, terminationPredicate, rkStartPoint, timeDelta);
+
+        // ... добавление точек на график
 
         int n = rkRes.size();
         double[] xValues = new double[n];
@@ -141,10 +158,16 @@ public class GUIManager {
             yValues[i] = startSpeed * sin(startAngle) * time - GRAVITY * pow(time, 2.0) / 2;
         }
 
+        if(yValues[n - 1] >= 0.000001) {
+            xValues[n - 1] = flightTime;
+            yValues[n - 1] = startSpeed * sin(startAngle) * flightTime - GRAVITY * pow(flightTime, 2.0) / 2;
+        }
         addDataSeries("Galilei method", "t", "y(t)", xValues, yValues);
         // print summary
         System.out.println("Galilei method summary:\n");
-        printStatistics(startSpeed, startAngle, timeDelta, n);
+        System.out.printf("\t* flight time: %.8f%n", flightTime);
+        System.out.printf("\t* flight distance: %.8f%n", BalisticsUtils.flightDistance(startSpeed, startAngle, flightTime));
+        System.out.println(new String(new char[20]).replaceAll("\0", "-"));
     }
 
     private void printStatistics(double startSpeed, double startAngle, double timeDelta, int n) {
