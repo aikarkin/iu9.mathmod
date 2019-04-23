@@ -6,9 +6,7 @@ import ru.bmstu.iu9.mathmod.lab2.geom.Circle;
 import ru.bmstu.iu9.mathmod.lab2.geom.Point2D;
 import ru.bmstu.iu9.mathmod.lab2.geom.Triangle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.*;
@@ -39,10 +37,12 @@ public class DelaunayUtil {
     public static Circle getCircumcircleOfTriangle(Triangle tr) {
         double r, x0, y0;
         double[] ps = getTriangleParams(tr);
+        double x1 = tr.p1().x(), y1 = tr.p1().y();
+        double d = 2 * ps[A_IDX];
 
-        r = sqrt(pow(ps[B_IDX], 2.0) + pow(ps[C_IDX], 2.0) + ps[D_IDX]) / (2 * ps[A_IDX]);
-        x0 = ps[B_IDX] / (2 * ps[A_IDX]);
-        y0 = -ps[C_IDX] / (2 * ps[A_IDX]);
+        x0 = ps[B_IDX] / d;
+        y0 = -ps[C_IDX] / d;
+        r = sqrt(pow(x1 - x0, 2.0) + pow(y1 - y0, 2.0));
 
         return new Circle(r, x0, y0);
     }

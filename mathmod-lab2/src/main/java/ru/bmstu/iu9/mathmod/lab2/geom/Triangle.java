@@ -121,4 +121,9 @@ public class Triangle implements BoundedGeometry {
         this.edges[2] = new Edge(this.points[2], this.points[0]);
     }
 
+    @Override
+    public String toString() {
+        return String.format("[ %s, %s, %s ]", p1(), p2(), p3());
+    }
+
 }

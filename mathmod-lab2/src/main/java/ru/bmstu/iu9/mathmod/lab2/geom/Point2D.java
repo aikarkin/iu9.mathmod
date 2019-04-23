@@ -33,5 +33,9 @@ public class Point2D extends ArrayRealVector {
         this.setEntry(1, y);
     }
 
+    @Override
+    public String toString() {
+        return String.format("(%.2f, %.2f)", x(), y());
+    }
 
 }

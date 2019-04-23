@@ -7,20 +7,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
+import static java.util.Arrays.asList;
 import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.checkDelaunayCondition;
 
 public class Triangulation {
 
     private static final double POINT_EPS = 0.001;
     private static final double EDGE_EPS = 0.001;
-    private static final double RECT_EPS = 10.0;
+    private static final double RECT_EPS = 20.0;
     private RTreeWrapper rTree = new RTreeWrapper();
     private Map<Edge, AdjacentTriangles> adjacentTrianglesMap = new HashMap<>();
     private Rectangle superRect;
+    private Set<Point2D> pointsSet;
 
     public Triangulation(List<Point2D> points) {
         if (points.size() == 0)
             return;
+
+        pointsSet = new HashSet<>(points);
 
         this.superRect = getSuperRectangle(points);
         addInitialTriangles(points.get(0));
@@ -30,11 +34,17 @@ public class Triangulation {
         }
     }
 
+
     public Rectangle getSuperRectangle() {
         return superRect;
     }
 
+    public List<Edge> getEdges() {
+        return new ArrayList<>(adjacentTrianglesMap.keySet());
+    }
+
     public List<Triangle> getTriangles() {
+
         return adjacentTrianglesMap.values()
                 .stream()
                 .map(AdjacentTriangles::getRhsTriangle)
@@ -42,8 +52,26 @@ public class Triangulation {
                 .collect(Collectors.toList());
     }
 
-    public List<Edge> getEdges() {
-        return new ArrayList<>(adjacentTrianglesMap.keySet());
+    public Optional<Triangle> findBoundingTriangle(Point2D pt) {
+        Optional<Triangle> foundTrOpt = rTree.findFirstBoundingTriangle(pt);
+        Set<Edge> superStructEdges = new HashSet<>(asList(getSuperRectangle().edges()));
+        Set<Point2D> superStructPoints = new HashSet<>(asList(getSuperRectangle().points()));
+
+        if (foundTrOpt.isPresent()) {
+            for (Edge e : foundTrOpt.get().edges()) {
+                if (superStructEdges.contains(e)) {
+                    return Optional.empty();
+                }
+            }
+
+            for (Point2D trPt : foundTrOpt.get().points()) {
+                if (superStructPoints.contains(trPt)) {
+                    return Optional.empty();
+                }
+            }
+        }
+
+        return foundTrOpt;
     }
 
     private void addInitialTriangles(Point2D p) {
@@ -92,7 +120,7 @@ public class Triangulation {
                 if (!used.contains(edge)) {
                     AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(edge);
                     Triangle adjacentTr = adjacentTriangles.adjacentTriangle(tr);
-                    if(adjacentTr == null) {
+                    if (adjacentTr == null) {
                         continue;
                     }
                     Point2D oppositePoint = adjacentTr.getOppositePoint(edge);
@@ -174,7 +202,7 @@ public class Triangulation {
         adjacentTrianglesMap.put(tr3.edges()[0], new AdjacentTriangles(tr2, tr3));
 
         // overwrite outer triangles:
-        for (Triangle tr : new Triangle[] {tr1, tr2, tr3}) {
+        for (Triangle tr : new Triangle[]{tr1, tr2, tr3}) {
             // tr.edges()[1] - outer edge
             Triangle trAdjacent = adjacentTrianglesMap.get(tr.edges()[1]).adjacentTriangle(boundTr);
             AdjacentTriangles adjacentTriangles = (trAdjacent == null)
@@ -214,17 +242,17 @@ public class Triangulation {
         maxX = points.stream().map(Point2D::x).max(Double::compareTo);
         maxY = points.stream().map(Point2D::y).max(Double::compareTo);
 
-        x1 = minX.orElseGet(p1::x);
-        y1 = minY.orElseGet(p1::y);
-        x2 = maxX.orElseGet(p1::x);
-        y2 = maxY.orElseGet(p1::y);
+        x1 = minX.orElseGet(p1::x) - RECT_EPS;
+        y1 = minY.orElseGet(p1::y) - RECT_EPS;
+        x2 = maxX.orElseGet(p1::x) + RECT_EPS;
+        y2 = maxY.orElseGet(p1::y) + RECT_EPS;
 
         w = abs(x2 - x1);
         h = abs(y2 - y1);
         return new Rectangle(
-                new Point2D(x1 - RECT_EPS, y1 - RECT_EPS),
-                w + RECT_EPS,
-                h + RECT_EPS
+                new Point2D(x1, y1),
+                w,
+                h
         );
     }
 

@@ -2,25 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04c1a146-ace0-4fd2-9c88-7c92b068c29b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_math3_3_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20180813.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/AdjacentTriangles.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/BoundedGeometry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Edge.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Rectangle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/points.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/geom/EdgeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapperTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab1/src/main/java/ru/bmstu/iu9/mathmod/commons/RungeKuttaAlgo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab1/src/main/java/ru/bmstu/iu9/mathmod/commons/RungeKuttaAlgo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab1/src/main/java/ru/bmstu/iu9/mathmod/lab1/GUIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab1/src/main/java/ru/bmstu/iu9/mathmod/lab1/GUIManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/GenerateRandomElevationMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointsDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointsList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Plane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/PlaneParamsCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mathmod-lab2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/mathmod-lab2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/layout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/layout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/points.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/layout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/layout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +42,61 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="120">
+              <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1162#1163#0" expanded="true" />
+                <element signature="e#1198#1199#0" expanded="true" />
+                <element signature="e#1267#1268#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Plane.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="230">
+              <caret line="57" column="5" lean-forward="true" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="121" column="32" lean-forward="true" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#5330#5331#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/text/Font.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="226" column="23" selection-start-line="226" selection-start-column="23" selection-end-line="226" selection-end-column="23" />
+              <folding>
+                <element signature="e#8611#8612#0" expanded="true" />
+                <element signature="e#8662#8663#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/PlaneParamsCache.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -47,27 +105,20 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+        <entry file="file://$PROJECT_DIR$/src/main/resources/layout.fxml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
             </state>
           </provider>
+          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/elevation_map.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#366#367#0" expanded="true" />
-                <element signature="e#426#427#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="76">
+              <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -75,8 +126,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            <state relative-caret-position="156">
+              <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
               <folding>
                 <element signature="e#321#322#0" expanded="true" />
                 <element signature="e#350#351#0" expanded="true" />
@@ -85,38 +136,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Rectangle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-968">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Edge.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1258">
-              <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="84" column="26" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
+            <state relative-caret-position="1156">
+              <caret line="95" column="11" lean-forward="true" selection-start-line="95" selection-start-column="11" selection-end-line="95" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,19 +149,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/AdjacentTriangles.java">
+        <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/paint/Color.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="35">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/BoundedGeometry.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+            <state relative-caret-position="171">
+              <caret line="1875" column="11" selection-start-line="1875" selection-start-column="11" selection-end-line="1875" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -149,35 +164,51 @@
       <list>
         <option value="Interface" />
         <option value="JUnit3 Test Class" />
-        <option value="Class" />
         <option value="Arquillian JUnit Test Class" />
         <option value="TestNG Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>map</find>
-      <find>map(</find>
-      <find>Observ</find>
-      <find>entries</find>
-      <find>min</find>
-      <find>p3()</find>
-      <find>addAll</find>
-      <find>create</find>
-      <find>var</find>
-      <find>findC</find>
-      <find>Rectangle</find>
-      <find>getSuper</find>
-      <find>pointIn</find>
-      <find>inTrian</find>
-      <find>pointInTr</find>
+      <find>System.err.println(</find>
+      <find>StackPane</find>
+      <find>onPi</find>
+      <find>getTriangles</find>
+      <find>find</find>
+      <find>get</find>
+      <find>drawEd</find>
+      <find>setTex</find>
+      <find>re</find>
+      <find>removeTriangle</find>
+      <find>text</find>
+      <find>addPin</find>
+      <find>remove</find>
+      <find>pickP</find>
+      <find>88</find>
+      <find>pickPoint</find>
+      <find>Point</find>
+      <find>BLUE</find>
+      <find>drawCir</find>
+      <find>calcC</find>
+      <find>circum</find>
+      <find>GRE</find>
+      <find>dr</find>
+      <find>drawPi</find>
+      <find>137</find>
+      <find>76</find>
+      <find>48</find>
+      <find>getSu</find>
+      <find>label</find>
+      <find>124</find>
     </findStrings>
     <replaceStrings>
       <replace>object</replace>
       <replace>objects</replace>
       <replace>p3</replace>
       <replace>point</replace>
+      <replace>showErrorMessage(</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -205,14 +236,8 @@
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/NonLeafNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTree.java" />
         <option value="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/DelaunayUtilTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java" />
         <option value="$PROJECT_DIR$/src/main/resources/points.json" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/styles.css" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/layout.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/AdjacentTriangles.java" />
         <option value="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/geom/TriangleTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/geom/EdgeTest.java" />
@@ -220,10 +245,25 @@
         <option value="$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapperTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Edge.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Rectangle.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/parser/ElevationPointsDeserializer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/parser/ElevationPointsList.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/parser/ElevationPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Plane.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/PlaneParamsCache.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointSerializer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointsDeserializer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/GenerateRandomElevationMap.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/layout.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/elevation_map.json" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java" />
       </list>
     </option>
   </component>
@@ -246,7 +286,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -287,32 +326,36 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lab2" type="462c0819:PsiDirectoryNode" />
-              <item name="delaunay" type="462c0819:PsiDirectoryNode" />
+              <item name="fx" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mathmod-lab2" type="b2602c69:ProjectViewProjectNode" />
               <item name="mathmod-lab2" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="mathmod-lab2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="mathmod-lab2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="lab2" type="462c0819:PsiDirectoryNode" />
+              <item name="geom" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mathmod-lab2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mathmod-lab2" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555417852685" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556045743450" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="TestNG" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3" value="junit.framework.TestCase" />
@@ -336,6 +379,9 @@
       <recent name="" />
       <recent name="junit.framework.TestCase" />
     </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ru.bmstu.iu9.mathmod.lab2.elevation" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -349,10 +395,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.GenerateRandomElevationMap">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ru.bmstu.iu9.mathmod.lab2.App" />
       <module name="mathmod-lab2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.bmstu.iu9.mathmod.lab2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GenerateRandomElevationMap" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.bmstu.iu9.mathmod.lab2.GenerateRandomElevationMap" />
+      <module name="mathmod-lab2" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/main/resources/elevation_map.json 15" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ru.bmstu.iu9.mathmod.lab2.*" />
@@ -373,24 +433,6 @@
       </extension>
       <option name="PACKAGE_NAME" value="ru.bmstu.iu9.mathmod.lab2.geom" />
       <option name="MAIN_CLASS_NAME" value="ru.bmstu.iu9.mathmod.lab2.geom.EdgeTest" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EdgeTest.testEquals" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="mathmod-lab2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ru.bmstu.iu9.mathmod.lab2.geom.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ru.bmstu.iu9.mathmod.lab2.geom" />
-      <option name="MAIN_CLASS_NAME" value="ru.bmstu.iu9.mathmod.lab2.geom.EdgeTest" />
-      <option name="METHOD_NAME" value="testEquals" />
-      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -495,13 +537,20 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.App" />
+      <item itemvalue="Application.GenerateRandomElevationMap" />
+      <item itemvalue="TestNG.EdgeTest" />
+      <item itemvalue="TestNG.EdgeTest.testHashCode" />
+      <item itemvalue="TestNG.RTreeWrapperTest.pointInTriangle" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.App" />
+        <item itemvalue="Application.GenerateRandomElevationMap" />
         <item itemvalue="TestNG.RTreeWrapperTest.pointInTriangle" />
         <item itemvalue="TestNG.EdgeTest" />
         <item itemvalue="TestNG.EdgeTest.testHashCode" />
-        <item itemvalue="TestNG.EdgeTest.testEquals" />
       </list>
     </recent_temporary>
   </component>
@@ -527,6 +576,8 @@
       <workItem from="1554804816624" duration="7535000" />
       <workItem from="1555053474716" duration="10233000" />
       <workItem from="1555403954617" duration="3776000" />
+      <workItem from="1556012561632" duration="8712000" />
+      <workItem from="1556030568906" duration="14901000" />
     </task>
     <servers />
   </component>
@@ -563,7 +614,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76618000" />
+    <option name="totallyTimeSpent" value="100231000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -576,8 +627,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.4924182" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.50039905" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24980047" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -587,7 +639,7 @@
       <window_info id="Archetypes" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32899022" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32899022" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5537459" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -595,7 +647,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.95114005" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32899022" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -628,6 +680,36 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>boundingTriangle.get()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>heightOfPoint.</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tr.p2()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>heightOfPoint.get(tr.p2())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>heightOfPoint.get(tr.p1())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>heightOfPoint.get(tr.p3())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>adjacentTrianglesMap.values().stream().map(AdjacentTriangles::getRhsTriangle).filter(Objects::nonNull).map(Triangle::points).collect(Collectors.toList())</expression-string>
         <language-id>JAVA</language-id>
         <custom-info>ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation</custom-info>
@@ -651,96 +733,9 @@
         <custom-info>ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation</custom-info>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>points.get(0)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>adjacentTrianglesMap.values().stream().map(AdjacentTriangles::getLhsTriangle).map(Triangle::points).collect(Collectors.toList())</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>adjacentTrianglesMap.values().stream().map(AdjacentTriangles::getLhsTriangle).collect(Collectors.toList())</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>((Triangulation)this).rTree</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>new Edge(new Point2D(1, 2), new Point2D(4, 3)).equals()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/Node.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/LeafNode.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/NonLeafNode.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/NodeUtils.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTree.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/io/reactivex/rxjava/1.1.4/rxjava-1.1.4.jar!/rx/functions/Func2.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/rtree/0.8-RC10/rtree-0.8-RC10.jar!/com/github/davidmoten/rtree/geometry/Rectangle.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/reactivex/rxjava/1.1.4/rxjava-1.1.4.jar!/rx/functions/Action1.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/reactivex/rxjava/1.1.4/rxjava-1.1.4.jar!/rx/Observable.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="1471" column="30" selection-start-line="1471" selection-start-column="30" selection-end-line="1471" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/DelaunayUtilTest.java" />
-    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk-11.0.2/lib/src.zip!/java.base/java/util/Optional.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="157" column="19" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
-          <folding>
-            <element signature="e#4812#4813#0" expanded="true" />
-            <element signature="e#4848#4849#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/junit/framework/Assert.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="46" column="23" selection-start-line="46" selection-start-column="23" selection-end-line="46" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/guava-mini/0.1/guava-mini-0.1.jar!/com/github/davidmoten/guavamini/Preconditions.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="27" column="23" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/rtree/0.8-RC10/rtree-0.8-RC10.jar!/com/github/davidmoten/rtree/geometry/RectangleImpl.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="111">
@@ -865,45 +860,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/points.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/paint/Color.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="1763" selection-start-line="1763" selection-end-line="1763" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="26" column="49" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/layout.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="93" selection-start-line="13" selection-start-column="93" selection-end-line="13" selection-end-column="93" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="1772" selection-start-line="1772" selection-end-line="1772" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/geom/TriangleTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/ru/bmstu/iu9/mathmod/lab2/geom/EdgeTest.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -923,37 +879,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/canvas/GraphicsContext.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
           <caret line="2422" column="16" selection-start-line="2422" selection-start-column="16" selection-end-line="2422" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -967,77 +896,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="84" column="26" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/BoundedGeometry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding>
-            <element signature="e#321#322#0" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Edge.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#366#367#0" expanded="true" />
-            <element signature="e#426#427#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1258">
-          <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1048,10 +910,273 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/BoundedGeometry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="97" column="21" selection-start-line="97" selection-start-column="21" selection-end-line="97" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/src.zip!/java/util/function/ToDoubleFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="39" column="17" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/src.zip!/java/util/Comparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="995">
+          <caret line="528" column="54" lean-forward="true" selection-start-line="528" selection-start-column="54" selection-end-line="528" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Rectangle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-968">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="221">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointsList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="11" column="50" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/points.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.9.8/jackson-databind-2.9.8.jar!/com/fasterxml/jackson/databind/module/SimpleModule.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="170" column="24" selection-start-line="170" selection-start-column="24" selection-end-line="170" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/GeometryUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPointsDeserializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="18" column="13" lean-forward="true" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="1768" selection-start-line="1768" selection-end-line="1768" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/elevation/ElevationPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#836#837#0" expanded="true" />
+            <element signature="e#880#881#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/GenerateRandomElevationMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="21" column="50" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/rtree/RTreeWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="52" column="22" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="234" column="18" selection-start-line="234" selection-start-column="18" selection-end-line="234" selection-end-column="18" />
+          <folding>
+            <element signature="e#10065#10066#0" expanded="true" />
+            <element signature="e#10148#10149#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Point2D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#728#729#0" expanded="true" />
+            <element signature="e#767#768#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Triangle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="127" lean-forward="true" selection-start-line="127" selection-end-line="127" />
+          <folding>
+            <element signature="e#3230#3231#0" expanded="true" />
+            <element signature="e#3269#3270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Circle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+          <folding>
+            <element signature="e#321#322#0" expanded="true" />
+            <element signature="e#350#351#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/DelaunayUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1156">
+          <caret line="95" column="11" lean-forward="true" selection-start-line="95" selection-start-column="11" selection-end-line="95" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/layout.fxml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/Plane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="57" column="5" lean-forward="true" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/delaunay/Triangulation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1162#1163#0" expanded="true" />
+            <element signature="e#1198#1199#0" expanded="true" />
+            <element signature="e#1267#1268#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/paint/Color.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="1875" column="11" selection-start-line="1875" selection-start-column="11" selection-end-line="1875" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../libs/jdk1.8.0_181/javafx-src.zip!/javafx/scene/text/Font.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="226" column="23" selection-start-line="226" selection-start-column="23" selection-end-line="226" selection-end-column="23" />
+          <folding>
+            <element signature="e#8611#8612#0" expanded="true" />
+            <element signature="e#8662#8663#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/elevation_map.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/geom/PlaneParamsCache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/bmstu/iu9/mathmod/lab2/fx/GUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="121" column="32" lean-forward="true" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5330#5331#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -19,4 +19,12 @@ public class Circle {
         return r;
     }
 
+    @Override
+    public String toString() {
+        return "Circle{" +
+                "center=" + center +
+                ", r=" + r +
+                '}';
+    }
+
 }
