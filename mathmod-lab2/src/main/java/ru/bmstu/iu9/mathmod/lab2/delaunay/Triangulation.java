@@ -89,7 +89,6 @@ public class Triangulation {
 
     private void addPoint(Vector2D p) {
         Optional<Triangle> boundTrOpt = rTree.findFirstBoundingTriangle(p);
-        System.out.println("Add vec2d: " + p);
 
         if (!boundTrOpt.isPresent()) {
             throw new IllegalStateException("Point out of super structure");
@@ -186,8 +185,6 @@ public class Triangulation {
 
         adjacentTrianglesMap.put(flippedAdjacentTrs.getCommonEdge(), flippedAdjacentTrs);
         rTree.addTriangles(newLhsTr, newRhsTr);
-
-        System.out.printf("Flip triangles: %s -> %s%n", adjacentTriangles, flippedAdjacentTrs);
 
         return new Triangle[]{oldLhsTr, oldRhsTr};
     }

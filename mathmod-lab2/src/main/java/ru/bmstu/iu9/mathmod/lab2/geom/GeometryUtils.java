@@ -60,7 +60,6 @@ public class GeometryUtils {
     }
 
     public static Circle getCircumscribedCircle(Triangle tr) {
-        System.out.println("Calc circumscribed circle for triangle: " + tr);
         Vector2D[] edges = Arrays.stream(tr.edges())
                 .map(Edge::toVector)
                 .toArray(Vector2D[]::new);

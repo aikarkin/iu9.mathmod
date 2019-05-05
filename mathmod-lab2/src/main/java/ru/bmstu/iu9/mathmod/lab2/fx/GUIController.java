@@ -7,7 +7,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -37,6 +40,9 @@ public class GUIController {
     @FXML
     private Label elevationCoordinates;
 
+    @FXML
+    private StackPane stackPane;
+
     private ElevationPointsList points;
 
     private Vector2D selectedPoint;
@@ -46,6 +52,8 @@ public class GUIController {
     private Map<Vector2D, Double> heightOfPoint;
 
     private Triangulation triangulation;
+
+    private boolean showCircles = false;
 
     @FXML
     public void onChooseFile() {
@@ -73,40 +81,56 @@ public class GUIController {
         }
 
         buildTriangulationButton.setDisable(false);
-        GraphicsContext ctx = canvas.getGraphicsContext2D();
-        ctx.clearRect(0, 0, 600, 400);
-        points.forEach(p -> System.out.printf("Point: (%.3f, %.3f)%n", p.x(), p.y()));
         heightOfPoint = points
                 .stream()
                 .collect(Collectors.toMap(ElevationPoint::xyProjection, ElevationPoint::h));
 
         triangulation = new Triangulation(points.getXYProjections());
+        clearAndDrawTriangulation();
+    }
 
-        for (Triangle tr : triangulation.getTriangles()) {
-            for (Edge e : tr.edges()) {
-                drawEdge(ctx, e, Color.BLUE);
+    private void clearAndDrawTriangulation() {
+        if(triangulation != null) {
+            GraphicsContext ctx = canvas.getGraphicsContext2D();
+            ctx.clearRect(0, 0, stackPane.getWidth(), stackPane.getHeight());
+            Set<Vector2D> superRectPoints = new HashSet<>(Arrays.asList(triangulation.getSuperRectangle().points()));
 
+            for(Triangle tr : triangulation.getTriangles()) {
+                for(Edge e : tr.edges()) {
+                    if(superRectPoints.contains(e.first()) || superRectPoints.contains(e.second())) {
+                        drawEdge(ctx, e, Color.BLUE);
+                    } else {
+                        drawEdge(ctx, e, Color.WHITE);
+                    }
+                }
             }
-            Circle circumscribedCircle = GeometryUtils.getCircumscribedCircle(tr);
-            drawCircle(ctx, circumscribedCircle, Color.RED);
-            drawPoint(ctx, circumscribedCircle.getCenter(), 4.0, Color.YELLOWGREEN);
+
+            for (Vector2D pt : points.getXYProjections()) {
+                drawPoint(ctx, pt, 5.0, Color.RED);
+            }
+
+
+            for (ElevationPoint pt : points) {
+                addLabelForPoint(ctx, pt.xyProjection(), String.format("%d", (int) pt.h()));
+            }
         }
+    }
 
-        Set<Vector2D> superRectPoints = new HashSet<>(Arrays.asList(triangulation.getSuperRectangle().points()));
-
-        triangulation.getTriangles()
-                .stream()
-                .filter(tr -> !superRectPoints.contains(tr.p1()) && !superRectPoints.contains(tr.p2()) && !superRectPoints.contains(tr.p3()))
-                .flatMap(tr -> Arrays.stream(tr.edges()))
-                .forEach(e -> drawEdge(ctx, e, Color.WHITE));
-
-        for (Vector2D pt : points.getXYProjections()) {
-            drawPoint(ctx, pt, 5.0, Color.RED);
-        }
-
-
-        for (ElevationPoint pt : points) {
-            addLabelForPoint(ctx, pt.xyProjection(), String.format("%d", (int) pt.h()));
+    @FXML
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(triangulation != null && keyEvent.getCode() == KeyCode.C) {
+            if(!showCircles) {
+                showCircles = true;
+                GraphicsContext ctx = canvas.getGraphicsContext2D();
+                for (Triangle tr : triangulation.getTriangles()) {
+                    Circle circumscribedCircle = GeometryUtils.getCircumscribedCircle(tr);
+                    drawCircle(ctx, circumscribedCircle, Color.RED);
+                    drawPoint(ctx, circumscribedCircle.getCenter(), 4.0, Color.YELLOWGREEN);
+                }
+            } else {
+                showCircles = false;
+                clearAndDrawTriangulation();
+            }
         }
     }
 
@@ -144,7 +168,6 @@ public class GUIController {
         }
 
         Triangle tr = boundingTriangle.get();
-        System.out.println("Bounding triangle: " + tr.toString());
         double h = calcPointHeight(tr, pt);
         elevationCoordinates.setText(String.format("x: %.2f, y: %.2f, h: %.2f", x, y, h));
     }
@@ -178,7 +201,6 @@ public class GUIController {
     }
 
     private static void drawCircle(GraphicsContext ctx, Circle circle, Color color) {
-        System.out.println("Drawing circle: " + circle);
         Vector2D center = circle.getCenter();
         double r = circle.getRadius();
 
