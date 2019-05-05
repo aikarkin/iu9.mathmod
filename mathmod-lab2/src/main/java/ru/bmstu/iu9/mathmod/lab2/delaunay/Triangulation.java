@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
-import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.checkDelaunayCondition;
+import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.satisfiesDelaunayCondition;
 import static ru.bmstu.iu9.mathmod.lab2.geom.GeometryUtils.isConvexPolygon;
 
 public class Triangulation {
@@ -103,58 +103,93 @@ public class Triangulation {
     }
 
     private void rebuildTriangulation(Triangle[] splitedTrs) {
-        Queue<Triangle> queue = new LinkedList<>();
+        Queue<Edge> queue = new LinkedList<>();
         Set<Edge> used = new HashSet<>(findCommonEdges(splitedTrs));
-        Collections.addAll(queue, splitedTrs);
+        Arrays.stream(splitedTrs)
+                .flatMap(tr -> Arrays.stream(tr.edges()))
+                .filter(e -> !used.contains(e))
+                .forEach(queue::add);
 
-        while (!queue.isEmpty()) {
-            Triangle tr = queue.poll();
+        while(!queue.isEmpty()) {
+            Edge polledEdge = queue.poll();
+            used.add(polledEdge);
 
-            for (Edge edge : tr.edges()) {
-                if (!used.contains(edge)) {
-                    AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(edge);
-                    Triangle adjacentTr;
-                    try {
-                        adjacentTr = adjacentTriangles.adjacentTriangle(tr);
-                    } catch (IllegalArgumentException e) {
-                        throw e;
+            AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(polledEdge);
+
+            if(adjacentTriangles == null) {
+                throw new RuntimeException("Adjacent triangles are null.");
+            }
+
+            Triangle lhsTr = adjacentTriangles.getLhsTriangle();
+            Triangle rhsTr = adjacentTriangles.getRhsTriangle();
+
+            if(lhsTr == null || rhsTr == null)
+                continue;
+
+            try {
+                if (isConvexPolygon(adjacentTriangles.pointsSorted()) && !satisfiesDelaunayCondition(adjacentTriangles)) {
+                    Triangle[] flippedTriangles = flipTriangles(adjacentTriangles);
+
+                    for (Triangle tr : flippedTriangles) {
+                        for (Edge e : tr.edges()) {
+                            if (!used.contains(e)) {
+                                queue.add(e);
+                            }
+                        }
                     }
-                    if (adjacentTr == null) {
-                        continue;
-                    }
-                    Vector2D oppositePoint = adjacentTr.getOppositePoint(edge);
-                    if (isConvexPolygon(adjacentTriangles.points()) && !checkDelaunayCondition(tr, oppositePoint)) {
-                        Triangle[] flipped = flipTriangles(adjacentTriangles);
-                        Collections.addAll(queue, flipped);
-                    }
-                    used.add(edge);
                 }
+            } catch (NullPointerException npe) {
+                throw npe;
             }
         }
     }
 
+//    @SuppressWarnings("Duplicates")
     private Triangle[] flipTriangles(AdjacentTriangles adjacentTriangles) {
         Edge commonEdge = adjacentTriangles.getCommonEdge();
-        Triangle lhsTr, rhsTr;
+        Triangle oldLhsTr, oldRhsTr;
         Vector2D pt1, pt2, pt3, pt4;
-        lhsTr = adjacentTriangles.getLhsTriangle();
-        rhsTr = adjacentTriangles.getRhsTriangle();
-        pt1 = adjacentTriangles.points()[0];
-        pt2 = adjacentTriangles.points()[1];
-        pt3 = adjacentTriangles.points()[2];
-        pt4 = adjacentTriangles.points()[3];
+        oldLhsTr = adjacentTriangles.getLhsTriangle();
+        oldRhsTr = adjacentTriangles.getRhsTriangle();
+        pt1 = adjacentTriangles.pointsSorted()[0];
+        pt2 = adjacentTriangles.pointsSorted()[1];
+        pt3 = adjacentTriangles.pointsSorted()[2];
+        pt4 = adjacentTriangles.pointsSorted()[3];
 
         adjacentTrianglesMap.remove(commonEdge);
-        rTree.removeTraingles(lhsTr, rhsTr);
+        rTree.removeTraingles(oldLhsTr, oldRhsTr);
+        Map<Edge, Triangle> oldAdjacentTriangles = new HashMap<>();
 
-        lhsTr = new Triangle(pt2, pt3, pt4);
-        rhsTr = new Triangle(pt4, pt1, pt2);
-        commonEdge = new Edge(pt2, pt4);
+        for(Triangle tr : new Triangle[]{oldLhsTr, oldRhsTr}) {
+            for(Edge e: tr.edges()) {
+                if(!e.equals(commonEdge)) {
+                    oldAdjacentTriangles.put(e, adjacentTrianglesMap.get(e).adjacentTriangle(tr));
+                }
+            }
+        }
 
-        adjacentTrianglesMap.put(commonEdge, new AdjacentTriangles(lhsTr, rhsTr));
-        rTree.addTriangles(lhsTr, rhsTr);
+        Triangle newLhsTr = new Triangle(pt2, pt3, pt4);
+        Triangle newRhsTr = new Triangle(pt4, pt1, pt2);
+        AdjacentTriangles flippedAdjacentTrs = new AdjacentTriangles(newLhsTr, newRhsTr);
 
-        return new Triangle[]{lhsTr, rhsTr};
+        for(Triangle tr : new Triangle[]{newLhsTr, newRhsTr}) {
+            for (Edge e : tr.edges()) {
+                if(!e.equals(flippedAdjacentTrs.getCommonEdge())) {
+                    if(oldAdjacentTriangles.get(e) == null) {
+                        adjacentTrianglesMap.put(e, new AdjacentTriangles(tr, e));
+                    } else {
+                        adjacentTrianglesMap.put(e, new AdjacentTriangles(tr, oldAdjacentTriangles.get(e)));
+                    }
+                }
+            }
+        }
+
+        adjacentTrianglesMap.put(flippedAdjacentTrs.getCommonEdge(), flippedAdjacentTrs);
+        rTree.addTriangles(newLhsTr, newRhsTr);
+
+        System.out.printf("Flip triangles: %s -> %s%n", adjacentTriangles, flippedAdjacentTrs);
+
+        return new Triangle[]{oldLhsTr, oldRhsTr};
     }
 
     private Triangle[] splitTriangles(Triangle boundTr, Vector2D p) {

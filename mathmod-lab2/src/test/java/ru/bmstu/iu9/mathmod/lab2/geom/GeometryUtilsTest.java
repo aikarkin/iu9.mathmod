@@ -21,8 +21,8 @@ public class GeometryUtilsTest {
         AdjacentTriangles convexTriangles = new AdjacentTriangles(tr1, tr2);
         AdjacentTriangles nonConvexTriangles = new AdjacentTriangles(tr1, tr3);
 
-        assertTrue(isConvexPolygon(convexTriangles.points()));
-        assertFalse(isConvexPolygon(nonConvexTriangles.points()));
+        assertTrue(isConvexPolygon(convexTriangles.pointsSorted()));
+        assertFalse(isConvexPolygon(nonConvexTriangles.pointsSorted()));
     }
 
     @Test

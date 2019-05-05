@@ -68,7 +68,7 @@ public class GUIController {
     @FXML
     public void onBuildTriangulationClicked() {
         if (points == null) {
-            showErrorMessage("Unable to build elevation map: no elevation points loaded");
+            showErrorMessage("Unable to build elevation map: no elevation pointsSorted loaded");
             return;
         }
 

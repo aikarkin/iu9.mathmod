@@ -88,7 +88,7 @@ public class GeometryUtils {
         return new Circle(center, radius);
     }
 
-    private static double scalar(Vector2D v1, Vector2D v2) {
+    public static double scalar(Vector2D v1, Vector2D v2) {
         return v1.x() * v2.x() + v1.y() * v2.y();
     }
 
