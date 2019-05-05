@@ -3,24 +3,25 @@ package ru.bmstu.iu9.mathmod.lab2.geom;
 import java.util.Objects;
 
 public class Edge {
-    private Point2D firstPoint;
-    private Point2D secondPoint;
 
-    public Edge(Point2D first, Point2D second) {
+    private Vector2D firstPoint;
+    private Vector2D secondPoint;
+
+    public Edge(Vector2D first, Vector2D second) {
         this.firstPoint = first;
         this.secondPoint = second;
     }
 
-    public Point2D first() {
+    public static Edge of(Vector2D p1, Vector2D p2) {
+        return new Edge(p1, p2);
+    }
+
+    public Vector2D first() {
         return firstPoint;
     }
 
-    public Point2D second() {
+    public Vector2D second() {
         return secondPoint;
-    }
-
-    public static Edge of(Point2D p1, Point2D p2) {
-        return new Edge(p1, p2);
     }
 
     // (p1, p2) == (p2, p1)
@@ -30,10 +31,10 @@ public class Edge {
         if (o == null || getClass() != o.getClass()) return false;
         Edge otherEdge = (Edge) o;
 
-        Point2D cMinPt = minPoint(firstPoint, secondPoint);
-        Point2D cMaxPt = maxPoint(firstPoint, secondPoint);
-        Point2D oMinPt = minPoint(otherEdge.firstPoint, otherEdge.secondPoint);
-        Point2D oMaxPt = maxPoint(otherEdge.firstPoint, otherEdge.secondPoint);
+        Vector2D cMinPt = minPoint(firstPoint, secondPoint);
+        Vector2D cMaxPt = maxPoint(firstPoint, secondPoint);
+        Vector2D oMinPt = minPoint(otherEdge.firstPoint, otherEdge.secondPoint);
+        Vector2D oMaxPt = maxPoint(otherEdge.firstPoint, otherEdge.secondPoint);
 
         return Objects.equals(cMinPt, oMinPt) && Objects.equals(cMaxPt, oMaxPt);
     }
@@ -41,8 +42,8 @@ public class Edge {
     // hash(p1, p2) == hash(p2, p1)
     @Override
     public int hashCode() {
-        Point2D minPoint = minPoint(firstPoint, secondPoint);
-        Point2D maxPoint = maxPoint(firstPoint, secondPoint);
+        Vector2D minPoint = minPoint(firstPoint, secondPoint);
+        Vector2D maxPoint = maxPoint(firstPoint, secondPoint);
         return Objects.hash(minPoint, maxPoint);
     }
 
@@ -51,24 +52,28 @@ public class Edge {
         return String.format("%s -- %s", firstPoint, secondPoint);
     }
 
-    private static Point2D minPoint(Point2D pt1, Point2D pt2) {
-        if(pt1.x() < pt2.x()) {
+    public Vector2D toVector() {
+        return new Vector2D(second().x() - first().x(), second().y() - first().y());
+    }
+
+    private static Vector2D minPoint(Vector2D pt1, Vector2D pt2) {
+        if (pt1.x() < pt2.x()) {
             return pt1;
-        } else if(pt1.x() > pt2.x()) {
+        } else if (pt1.x() > pt2.x()) {
             return pt2;
         }
 
-        if(pt1.y() < pt2.y()) {
+        if (pt1.y() < pt2.y()) {
             return pt1;
-        } else if(pt1.y() > pt2.y()) {
+        } else if (pt1.y() > pt2.y()) {
             return pt2;
         }
 
         return pt1;
     }
 
-    private static Point2D maxPoint(Point2D pt1, Point2D pt2) {
-        Point2D pt1st = minPoint(pt1, pt2);
+    private static Vector2D maxPoint(Vector2D pt1, Vector2D pt2) {
+        Vector2D pt1st = minPoint(pt1, pt2);
         return pt1st.equals(pt1) ? pt2 : pt1;
     }
 

@@ -2,6 +2,8 @@ package ru.bmstu.iu9.mathmod.lab2.geom;
 
 import java.util.Objects;
 
+
+
 public class AdjacentTriangles {
 
     private Triangle lhsTriangle;
@@ -36,8 +38,35 @@ public class AdjacentTriangles {
         return commonEdge;
     }
 
+    public Vector2D[] pointsSorted() {
+        Edge splitEdge = commonEdge;
+        Vector2D pt1 = commonEdge.first();
+        Vector2D pt2 = lhsTriangle.getOppositePoint(commonEdge);
+        Vector2D pt3 = commonEdge.second();
+        Vector2D pt4 = rhsTriangle.getOppositePoint(commonEdge);
+
+        if(GeometryUtils.pseudoScalar(splitEdge.toVector(), new Vector2D(pt2.subtract(pt1))) > 0) {
+            pt1 = commonEdge.second();
+            pt3 = commonEdge.first();
+        }
+
+        return new Vector2D[] {pt1, pt2, pt3, pt4};
+    }
+
     public Triangle adjacentTriangle(Triangle tr) {
-        return tr.equals(lhsTriangle) ? rhsTriangle : lhsTriangle;
+        if(tr.equals(lhsTriangle)) {
+            return rhsTriangle;
+        }
+
+        if(tr.equals(rhsTriangle)) {
+            return lhsTriangle;
+        }
+
+        throw new IllegalArgumentException("Not adjacent triangles");
+    }
+
+    public boolean contains(Triangle tr) {
+        return (lhsTriangle != null && lhsTriangle.equals(tr) ) || (rhsTriangle != null && rhsTriangle.equals(tr));
     }
 
     @Override
@@ -52,6 +81,14 @@ public class AdjacentTriangles {
     @Override
     public int hashCode() {
         return Objects.hash(lhsTriangle, rhsTriangle);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "lhsTr=" + lhsTriangle +
+                ", rhsTr=" + rhsTriangle +
+                '}';
     }
 
     private static Edge calcCommonEdge(Triangle tr1, Triangle tr2) {

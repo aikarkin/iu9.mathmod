@@ -5,19 +5,24 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil;
 import ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation;
-import ru.bmstu.iu9.mathmod.lab2.geom.*;
+import ru.bmstu.iu9.mathmod.lab2.geom.Edge;
+import ru.bmstu.iu9.mathmod.lab2.geom.Triangle;
+import ru.bmstu.iu9.mathmod.lab2.geom.Vector2D;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class GUIController {
 
     @FXML
     private Canvas canvas;
 
-    private List<Point2D> points = new ArrayList<>();
+    private List<Vector2D> points = new ArrayList<>();
 
     @FXML
     public void onMouseClicked(MouseEvent event) {
@@ -27,32 +32,35 @@ public class GUIController {
         GraphicsContext ctx = canvas.getGraphicsContext2D();
         ctx.setFill(Color.WHITE);
         ctx.fillRect(x, y, 2.0, 2.0);
-        this.points.add(new Point2D(x, y));
+        this.points.add(new Vector2D(x, y));
     }
 
     @FXML
     public void onClearClicked() {
         GraphicsContext ctx = canvas.getGraphicsContext2D();
-        ctx.clearRect(0, 0, 600, 400);
+        ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         this.points.clear();
     }
 
     @FXML
     public void onBuildTriangulationClicked() {
         GraphicsContext ctx = canvas.getGraphicsContext2D();
-        points.forEach(p -> System.out.printf("Point: (%.3f, %.3f)%n", p.x(), p.y()));
-        Triangulation triangulation = new Triangulation(points);
-        for (Edge e : triangulation.getEdges()) {
-            drawEdge(ctx, e, Color.WHITE);
+
+        if(points.size() < 3) {
+            return;
         }
 
-        strokeSuperRectEdges(ctx, triangulation.getSuperRectangle());
-        strokeCircumCircles(ctx, triangulation.getTriangles(), Color.RED);
-    }
+        Triangulation triangulation = new Triangulation(points);
+        Set<Vector2D> superStructurePoints = new HashSet<>(asList(triangulation.getSuperRectangle().points()));
 
-    private void strokeCircumCircles(GraphicsContext ctx, List<Triangle> triangles, Color color) {
-        for(Triangle tr : triangles) {
-            drawCircle(ctx, DelaunayUtil.getCircumcircleOfTriangle(tr), color);
+        for (Triangle tr : triangulation.getTriangles()) {
+            for (Edge e : tr.edges()) {
+                if (superStructurePoints.contains(e.first()) || superStructurePoints.contains(e.second())) {
+                    drawEdge(ctx, e, Color.BLUE);
+                } else {
+                    drawEdge(ctx, e, Color.WHITE);
+                }
+            }
         }
     }
 
@@ -62,23 +70,9 @@ public class GUIController {
         ctx.setLineWidth(2.0);
         ctx.setStroke(c);
         ctx.strokeLine(e.first().x(), e.first().y(), e.second().x(), e.second().y());
-//        ctx.moveTo(e.first().x(), e.first().y());
-//        ctx.lineTo(e.second().x(), e.second().y());
     }
 
-    private static void drawCircle(GraphicsContext ctx, Circle circle, Color color) {
-        ctx.setLineWidth(2.0);
-        ctx.setStroke(color);
-        ctx.strokeOval(circle.getCenter().x(), circle.getCenter().y(), 2 * circle.getRadius(), 2 * circle.getRadius());
-    }
-
-    private static void strokeSuperRectEdges(GraphicsContext ctx, Rectangle superRectangle) {
-        for(Edge e : superRectangle.edges()) {
-            drawEdge(ctx, e, Color.BLUE);
-        }
-    }
-
-    private static void removePoint(GraphicsContext ctx, Point2D pt) {
+    private static void removePoint(GraphicsContext ctx, Vector2D pt) {
         ctx.setFill(Color.DARKGRAY);
         ctx.fillRect(pt.x(), pt.y(), 2.0, 2.0);
     }

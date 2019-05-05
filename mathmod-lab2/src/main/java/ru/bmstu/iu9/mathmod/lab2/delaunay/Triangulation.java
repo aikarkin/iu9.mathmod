@@ -7,7 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
-import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.checkDelaunayCondition;
+import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.satisfiesDelaunayCondition;
+import static ru.bmstu.iu9.mathmod.lab2.geom.GeometryUtils.isConvexPolygon;
 
 public class Triangulation {
 
@@ -18,7 +19,7 @@ public class Triangulation {
     private Map<Edge, AdjacentTriangles> adjacentTrianglesMap = new HashMap<>();
     private Rectangle superRect;
 
-    public Triangulation(List<Point2D> points) {
+    public Triangulation(List<Vector2D> points) {
         if (points.size() == 0)
             return;
 
@@ -42,16 +43,12 @@ public class Triangulation {
                 .collect(Collectors.toList());
     }
 
-    public List<Edge> getEdges() {
-        return new ArrayList<>(adjacentTrianglesMap.keySet());
-    }
-
-    private void addInitialTriangles(Point2D p) {
-        Point2D[] rectPts = superRect.points();
+    private void addInitialTriangles(Vector2D p) {
+        Vector2D[] rectPts = superRect.points();
         int n = rectPts.length;
         Triangle curTr = null, firstTr = new Triangle(rectPts[n - 1], rectPts[0], p), prevTr;
         prevTr = firstTr;
-        rTree.addTriangle(prevTr);
+        rTree.addTriangle(firstTr);
         adjacentTrianglesMap.put(firstTr.edges()[0], new AdjacentTriangles(firstTr, firstTr.edges()[0]));
 
         for (int i = 1; i < n; i++) {
@@ -66,75 +63,108 @@ public class Triangulation {
         }
     }
 
-    private void addPoint(Point2D p) {
+    private void addPoint(Vector2D p) {
         Optional<Triangle> boundTrOpt = rTree.findFirstBoundingTriangle(p);
-        System.out.println("Add point: " + p);
 
         if (!boundTrOpt.isPresent()) {
             throw new IllegalStateException("Point out of super structure");
         }
 
         Triangle boundTr = boundTrOpt.get();
+        rTree.removeTriangle(boundTr);
         Triangle[] splitedTrs = splitTriangles(boundTr, p);
         rTree.addTriangles(splitedTrs);
         rebuildTriangulation(splitedTrs);
     }
 
     private void rebuildTriangulation(Triangle[] splitedTrs) {
-        Queue<Triangle> queue = new LinkedList<>();
+        Queue<Edge> queue = new LinkedList<>();
         Set<Edge> used = new HashSet<>(findCommonEdges(splitedTrs));
-        Collections.addAll(queue, splitedTrs);
+        Arrays.stream(splitedTrs)
+                .flatMap(tr -> Arrays.stream(tr.edges()))
+                .filter(e -> !used.contains(e))
+                .forEach(queue::add);
 
         while (!queue.isEmpty()) {
-            Triangle tr = queue.poll();
+            Edge polledEdge = queue.poll();
+            used.add(polledEdge);
 
-            for (Edge edge : tr.edges()) {
-                if (!used.contains(edge)) {
-                    AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(edge);
-                    Triangle adjacentTr = adjacentTriangles.adjacentTriangle(tr);
-                    if(adjacentTr == null) {
-                        continue;
+            AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(polledEdge);
+
+            if (adjacentTriangles == null) {
+                throw new RuntimeException("Adjacent triangles are null.");
+            }
+
+            Triangle lhsTr = adjacentTriangles.getLhsTriangle();
+            Triangle rhsTr = adjacentTriangles.getRhsTriangle();
+
+            if (lhsTr == null || rhsTr == null)
+                continue;
+
+
+            if (isConvexPolygon(adjacentTriangles.pointsSorted()) && !satisfiesDelaunayCondition(adjacentTriangles)) {
+                Triangle[] flippedTriangles = flipTriangles(adjacentTriangles);
+
+                for (Triangle tr : flippedTriangles) {
+                    for (Edge e : tr.edges()) {
+                        if (!used.contains(e)) {
+                            queue.add(e);
+                        }
                     }
-                    Point2D oppositePoint = adjacentTr.getOppositePoint(edge);
-                    if (!checkDelaunayCondition(tr, oppositePoint)) {
-                        Triangle[] flipped = flipTriangles(adjacentTriangles);
-                        Collections.addAll(queue, flipped);
-                    }
-                    used.add(edge);
                 }
             }
         }
     }
 
+
     private Triangle[] flipTriangles(AdjacentTriangles adjacentTriangles) {
         Edge commonEdge = adjacentTriangles.getCommonEdge();
-        Triangle lhsTr, rhsTr;
-        Point2D pt1, pt2, pt3, pt4;
-        lhsTr = adjacentTriangles.getLhsTriangle();
-        rhsTr = adjacentTriangles.getRhsTriangle();
-        pt1 = commonEdge.first();
-        pt2 = commonEdge.second();
-        pt3 = lhsTr.getOppositePoint(commonEdge);
-        pt4 = rhsTr.getOppositePoint(commonEdge);
+        Triangle oldLhsTr, oldRhsTr;
+        Vector2D pt1, pt2, pt3, pt4;
+        oldLhsTr = adjacentTriangles.getLhsTriangle();
+        oldRhsTr = adjacentTriangles.getRhsTriangle();
+        pt1 = adjacentTriangles.pointsSorted()[0];
+        pt2 = adjacentTriangles.pointsSorted()[1];
+        pt3 = adjacentTriangles.pointsSorted()[2];
+        pt4 = adjacentTriangles.pointsSorted()[3];
 
         adjacentTrianglesMap.remove(commonEdge);
-        rTree.removeTriangle(lhsTr);
-        rTree.removeTriangle(rhsTr);
+        rTree.removeTraingles(oldLhsTr, oldRhsTr);
+        Map<Edge, Triangle> oldAdjacentTriangles = new HashMap<>();
 
-        lhsTr = new Triangle(pt4, pt1, pt3);
-        rhsTr = new Triangle(pt3, pt2, pt4);
-        commonEdge = new Edge(pt4, pt3);
+        for (Triangle tr : new Triangle[]{oldLhsTr, oldRhsTr}) {
+            for (Edge e : tr.edges()) {
+                if (!e.equals(commonEdge)) {
+                    oldAdjacentTriangles.put(e, adjacentTrianglesMap.get(e).adjacentTriangle(tr));
+                }
+            }
+        }
 
-        adjacentTrianglesMap.put(commonEdge, new AdjacentTriangles(lhsTr, rhsTr));
-        rTree.addTriangles(lhsTr, rhsTr);
+        Triangle newLhsTr = new Triangle(pt2, pt3, pt4);
+        Triangle newRhsTr = new Triangle(pt4, pt1, pt2);
+        AdjacentTriangles flippedAdjacentTrs = new AdjacentTriangles(newLhsTr, newRhsTr);
 
-        return new Triangle[]{lhsTr, rhsTr};
+        for (Triangle tr : new Triangle[]{newLhsTr, newRhsTr}) {
+            for (Edge e : tr.edges()) {
+                if (!e.equals(flippedAdjacentTrs.getCommonEdge())) {
+                    if (oldAdjacentTriangles.get(e) == null) {
+                        adjacentTrianglesMap.put(e, new AdjacentTriangles(tr, e));
+                    } else {
+                        adjacentTrianglesMap.put(e, new AdjacentTriangles(tr, oldAdjacentTriangles.get(e)));
+                    }
+                }
+            }
+        }
+
+        adjacentTrianglesMap.put(flippedAdjacentTrs.getCommonEdge(), flippedAdjacentTrs);
+        rTree.addTriangles(newLhsTr, newRhsTr);
+
+        return new Triangle[]{oldLhsTr, oldRhsTr};
     }
 
-    private Triangle[] splitTriangles(Triangle boundTr, Point2D p) {
-        rTree.removeTriangle(boundTr);
-        for (Point2D trPnt : boundTr.points()) {
-            // point near triangle vertex
+    private Triangle[] splitTriangles(Triangle boundTr, Vector2D p) {
+        for (Vector2D trPnt : boundTr.points()) {
+            // vec2d near triangle vertex
             if (trPnt.getDistance(p) < POINT_EPS) {
                 return new Triangle[]{boundTr};
             }
@@ -143,9 +173,9 @@ public class Triangulation {
         for (int i = 0; i < 3; i++) {
             Edge splitedEdge = boundTr.edges()[i];
             Edge nextEdge = boundTr.edges()[(i + 1) % 3];
-            Point2D projection = new Point2D(p.projection(splitedEdge.second().subtract(splitedEdge.first())));
+            Vector2D projection = new Vector2D(p.projection(splitedEdge.second().subtract(splitedEdge.first())));
             double dist = p.subtract(projection).getNorm();
-            // point near edge
+            // vec2d near edge
             if (dist < EDGE_EPS) {
                 Triangle tr1 = new Triangle(nextEdge.second(), splitedEdge.first(), projection);
                 Triangle tr2 = new Triangle(nextEdge.second(), projection, splitedEdge.second());
@@ -174,16 +204,18 @@ public class Triangulation {
         adjacentTrianglesMap.put(tr3.edges()[0], new AdjacentTriangles(tr2, tr3));
 
         // overwrite outer triangles:
-        for (Triangle tr : new Triangle[] {tr1, tr2, tr3}) {
+        for (Triangle tr : new Triangle[]{tr1, tr2, tr3}) {
             // tr.edges()[1] - outer edge
-            Triangle trAdjacent = adjacentTrianglesMap.get(tr.edges()[1]).adjacentTriangle(boundTr);
+            Triangle trAdjacent;
+
+            trAdjacent = adjacentTrianglesMap.get(tr.edges()[1]).adjacentTriangle(boundTr);
+
             AdjacentTriangles adjacentTriangles = (trAdjacent == null)
                     ? new AdjacentTriangles(tr, tr.edges()[1])
                     : new AdjacentTriangles(tr, trAdjacent);
 
             adjacentTrianglesMap.put(tr.edges()[1], adjacentTriangles);
         }
-
 
         return new Triangle[]{tr1, tr2, tr3};
     }
@@ -205,14 +237,14 @@ public class Triangulation {
         return commonEdges;
     }
 
-    private static Rectangle getSuperRectangle(List<Point2D> points) {
-        Point2D p1 = points.get(0);
+    private static Rectangle getSuperRectangle(List<Vector2D> points) {
+        Vector2D p1 = points.get(0);
         Optional<Double> minX, minY, maxX, maxY;
         double x1, y1, x2, y2, w, h;
-        minX = points.stream().map(Point2D::x).min(Double::compareTo);
-        minY = points.stream().map(Point2D::y).min(Double::compareTo);
-        maxX = points.stream().map(Point2D::x).max(Double::compareTo);
-        maxY = points.stream().map(Point2D::y).max(Double::compareTo);
+        minX = points.stream().map(Vector2D::x).min(Double::compareTo);
+        minY = points.stream().map(Vector2D::y).min(Double::compareTo);
+        maxX = points.stream().map(Vector2D::x).max(Double::compareTo);
+        maxY = points.stream().map(Vector2D::y).max(Double::compareTo);
 
         x1 = minX.orElseGet(p1::x);
         y1 = minY.orElseGet(p1::y);
@@ -222,9 +254,9 @@ public class Triangulation {
         w = abs(x2 - x1);
         h = abs(y2 - y1);
         return new Rectangle(
-                new Point2D(x1 - RECT_EPS, y1 - RECT_EPS),
-                w + RECT_EPS,
-                h + RECT_EPS
+                new Vector2D(x1 - RECT_EPS, y1 - RECT_EPS),
+                w + 2.0 * RECT_EPS,
+                h + 2.0 * RECT_EPS
         );
     }
 
