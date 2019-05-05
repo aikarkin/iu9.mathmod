@@ -36,8 +36,25 @@ public class AdjacentTriangles {
         return commonEdge;
     }
 
+    public Vector2D[] points() {
+        return new Vector2D[] {
+                lhsTriangle.p1(),
+                lhsTriangle.p2(),
+                lhsTriangle.p3(),
+                rhsTriangle.getOppositePoint(commonEdge)
+        };
+    }
+
     public Triangle adjacentTriangle(Triangle tr) {
-        return tr.equals(lhsTriangle) ? rhsTriangle : lhsTriangle;
+        if(tr.equals(lhsTriangle)) {
+            return rhsTriangle;
+        }
+
+        if(tr.equals(rhsTriangle)) {
+            return lhsTriangle;
+        }
+
+        throw new IllegalArgumentException("Not adjacent triangles");
     }
 
     @Override

@@ -9,22 +9,21 @@ import java.util.stream.Collectors;
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
 import static ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil.checkDelaunayCondition;
+import static ru.bmstu.iu9.mathmod.lab2.geom.GeometryUtils.isConvexPolygon;
 
 public class Triangulation {
 
+
     private static final double POINT_EPS = 0.001;
     private static final double EDGE_EPS = 0.001;
-    private static final double RECT_EPS = 20.0;
+    private static final double RECT_EPS = 10.0;
     private RTreeWrapper rTree = new RTreeWrapper();
     private Map<Edge, AdjacentTriangles> adjacentTrianglesMap = new HashMap<>();
     private Rectangle superRect;
-    private Set<Point2D> pointsSet;
 
-    public Triangulation(List<Point2D> points) {
+    public Triangulation(List<Vector2D> points) {
         if (points.size() == 0)
             return;
-
-        pointsSet = new HashSet<>(points);
 
         this.superRect = getSuperRectangle(points);
         addInitialTriangles(points.get(0));
@@ -34,17 +33,11 @@ public class Triangulation {
         }
     }
 
-
     public Rectangle getSuperRectangle() {
         return superRect;
     }
 
-    public List<Edge> getEdges() {
-        return new ArrayList<>(adjacentTrianglesMap.keySet());
-    }
-
     public List<Triangle> getTriangles() {
-
         return adjacentTrianglesMap.values()
                 .stream()
                 .map(AdjacentTriangles::getRhsTriangle)
@@ -52,10 +45,10 @@ public class Triangulation {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Triangle> findBoundingTriangle(Point2D pt) {
+    public Optional<Triangle> findBoundingTriangle(Vector2D pt) {
         Optional<Triangle> foundTrOpt = rTree.findFirstBoundingTriangle(pt);
         Set<Edge> superStructEdges = new HashSet<>(asList(getSuperRectangle().edges()));
-        Set<Point2D> superStructPoints = new HashSet<>(asList(getSuperRectangle().points()));
+        Set<Vector2D> superStructPoints = new HashSet<>(asList(getSuperRectangle().points()));
 
         if (foundTrOpt.isPresent()) {
             for (Edge e : foundTrOpt.get().edges()) {
@@ -64,7 +57,7 @@ public class Triangulation {
                 }
             }
 
-            for (Point2D trPt : foundTrOpt.get().points()) {
+            for (Vector2D trPt : foundTrOpt.get().points()) {
                 if (superStructPoints.contains(trPt)) {
                     return Optional.empty();
                 }
@@ -74,12 +67,12 @@ public class Triangulation {
         return foundTrOpt;
     }
 
-    private void addInitialTriangles(Point2D p) {
-        Point2D[] rectPts = superRect.points();
+    private void addInitialTriangles(Vector2D p) {
+        Vector2D[] rectPts = superRect.points();
         int n = rectPts.length;
         Triangle curTr = null, firstTr = new Triangle(rectPts[n - 1], rectPts[0], p), prevTr;
         prevTr = firstTr;
-        rTree.addTriangle(prevTr);
+        rTree.addTriangle(firstTr);
         adjacentTrianglesMap.put(firstTr.edges()[0], new AdjacentTriangles(firstTr, firstTr.edges()[0]));
 
         for (int i = 1; i < n; i++) {
@@ -94,15 +87,16 @@ public class Triangulation {
         }
     }
 
-    private void addPoint(Point2D p) {
+    private void addPoint(Vector2D p) {
         Optional<Triangle> boundTrOpt = rTree.findFirstBoundingTriangle(p);
-        System.out.println("Add point: " + p);
+        System.out.println("Add vec2d: " + p);
 
         if (!boundTrOpt.isPresent()) {
             throw new IllegalStateException("Point out of super structure");
         }
 
         Triangle boundTr = boundTrOpt.get();
+        rTree.removeTriangle(boundTr);
         Triangle[] splitedTrs = splitTriangles(boundTr, p);
         rTree.addTriangles(splitedTrs);
         rebuildTriangulation(splitedTrs);
@@ -119,12 +113,17 @@ public class Triangulation {
             for (Edge edge : tr.edges()) {
                 if (!used.contains(edge)) {
                     AdjacentTriangles adjacentTriangles = adjacentTrianglesMap.get(edge);
-                    Triangle adjacentTr = adjacentTriangles.adjacentTriangle(tr);
+                    Triangle adjacentTr;
+                    try {
+                        adjacentTr = adjacentTriangles.adjacentTriangle(tr);
+                    } catch (IllegalArgumentException e) {
+                        throw e;
+                    }
                     if (adjacentTr == null) {
                         continue;
                     }
-                    Point2D oppositePoint = adjacentTr.getOppositePoint(edge);
-                    if (!checkDelaunayCondition(tr, oppositePoint)) {
+                    Vector2D oppositePoint = adjacentTr.getOppositePoint(edge);
+                    if (isConvexPolygon(adjacentTriangles.points()) && !checkDelaunayCondition(tr, oppositePoint)) {
                         Triangle[] flipped = flipTriangles(adjacentTriangles);
                         Collections.addAll(queue, flipped);
                     }
@@ -137,21 +136,20 @@ public class Triangulation {
     private Triangle[] flipTriangles(AdjacentTriangles adjacentTriangles) {
         Edge commonEdge = adjacentTriangles.getCommonEdge();
         Triangle lhsTr, rhsTr;
-        Point2D pt1, pt2, pt3, pt4;
+        Vector2D pt1, pt2, pt3, pt4;
         lhsTr = adjacentTriangles.getLhsTriangle();
         rhsTr = adjacentTriangles.getRhsTriangle();
-        pt1 = commonEdge.first();
-        pt2 = commonEdge.second();
-        pt3 = lhsTr.getOppositePoint(commonEdge);
-        pt4 = rhsTr.getOppositePoint(commonEdge);
+        pt1 = adjacentTriangles.points()[0];
+        pt2 = adjacentTriangles.points()[1];
+        pt3 = adjacentTriangles.points()[2];
+        pt4 = adjacentTriangles.points()[3];
 
         adjacentTrianglesMap.remove(commonEdge);
-        rTree.removeTriangle(lhsTr);
-        rTree.removeTriangle(rhsTr);
+        rTree.removeTraingles(lhsTr, rhsTr);
 
-        lhsTr = new Triangle(pt4, pt1, pt3);
-        rhsTr = new Triangle(pt3, pt2, pt4);
-        commonEdge = new Edge(pt4, pt3);
+        lhsTr = new Triangle(pt2, pt3, pt4);
+        rhsTr = new Triangle(pt4, pt1, pt2);
+        commonEdge = new Edge(pt2, pt4);
 
         adjacentTrianglesMap.put(commonEdge, new AdjacentTriangles(lhsTr, rhsTr));
         rTree.addTriangles(lhsTr, rhsTr);
@@ -159,10 +157,9 @@ public class Triangulation {
         return new Triangle[]{lhsTr, rhsTr};
     }
 
-    private Triangle[] splitTriangles(Triangle boundTr, Point2D p) {
-        rTree.removeTriangle(boundTr);
-        for (Point2D trPnt : boundTr.points()) {
-            // point near triangle vertex
+    private Triangle[] splitTriangles(Triangle boundTr, Vector2D p) {
+        for (Vector2D trPnt : boundTr.points()) {
+            // vec2d near triangle vertex
             if (trPnt.getDistance(p) < POINT_EPS) {
                 return new Triangle[]{boundTr};
             }
@@ -171,9 +168,9 @@ public class Triangulation {
         for (int i = 0; i < 3; i++) {
             Edge splitedEdge = boundTr.edges()[i];
             Edge nextEdge = boundTr.edges()[(i + 1) % 3];
-            Point2D projection = new Point2D(p.projection(splitedEdge.second().subtract(splitedEdge.first())));
+            Vector2D projection = new Vector2D(p.projection(splitedEdge.second().subtract(splitedEdge.first())));
             double dist = p.subtract(projection).getNorm();
-            // point near edge
+            // vec2d near edge
             if (dist < EDGE_EPS) {
                 Triangle tr1 = new Triangle(nextEdge.second(), splitedEdge.first(), projection);
                 Triangle tr2 = new Triangle(nextEdge.second(), projection, splitedEdge.second());
@@ -204,14 +201,18 @@ public class Triangulation {
         // overwrite outer triangles:
         for (Triangle tr : new Triangle[]{tr1, tr2, tr3}) {
             // tr.edges()[1] - outer edge
-            Triangle trAdjacent = adjacentTrianglesMap.get(tr.edges()[1]).adjacentTriangle(boundTr);
+            Triangle trAdjacent;
+            try {
+                trAdjacent = adjacentTrianglesMap.get(tr.edges()[1]).adjacentTriangle(boundTr);
+            } catch (IllegalArgumentException e) {
+                throw e;
+            }
             AdjacentTriangles adjacentTriangles = (trAdjacent == null)
                     ? new AdjacentTriangles(tr, tr.edges()[1])
                     : new AdjacentTriangles(tr, trAdjacent);
 
             adjacentTrianglesMap.put(tr.edges()[1], adjacentTriangles);
         }
-
 
         return new Triangle[]{tr1, tr2, tr3};
     }
@@ -233,26 +234,26 @@ public class Triangulation {
         return commonEdges;
     }
 
-    private static Rectangle getSuperRectangle(List<Point2D> points) {
-        Point2D p1 = points.get(0);
+    private static Rectangle getSuperRectangle(List<Vector2D> points) {
+        Vector2D p1 = points.get(0);
         Optional<Double> minX, minY, maxX, maxY;
         double x1, y1, x2, y2, w, h;
-        minX = points.stream().map(Point2D::x).min(Double::compareTo);
-        minY = points.stream().map(Point2D::y).min(Double::compareTo);
-        maxX = points.stream().map(Point2D::x).max(Double::compareTo);
-        maxY = points.stream().map(Point2D::y).max(Double::compareTo);
+        minX = points.stream().map(Vector2D::x).min(Double::compareTo);
+        minY = points.stream().map(Vector2D::y).min(Double::compareTo);
+        maxX = points.stream().map(Vector2D::x).max(Double::compareTo);
+        maxY = points.stream().map(Vector2D::y).max(Double::compareTo);
 
-        x1 = minX.orElseGet(p1::x) - RECT_EPS;
-        y1 = minY.orElseGet(p1::y) - RECT_EPS;
-        x2 = maxX.orElseGet(p1::x) + RECT_EPS;
-        y2 = maxY.orElseGet(p1::y) + RECT_EPS;
+        x1 = minX.orElseGet(p1::x);
+        y1 = minY.orElseGet(p1::y);
+        x2 = maxX.orElseGet(p1::x);
+        y2 = maxY.orElseGet(p1::y);
 
         w = abs(x2 - x1);
         h = abs(y2 - y1);
         return new Rectangle(
-                new Point2D(x1, y1),
-                w,
-                h
+                new Vector2D(x1 - RECT_EPS, y1 - RECT_EPS),
+                w + 2.0 * RECT_EPS,
+                h + 2.0 * RECT_EPS
         );
     }
 

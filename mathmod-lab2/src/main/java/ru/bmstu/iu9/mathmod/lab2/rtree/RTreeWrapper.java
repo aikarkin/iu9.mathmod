@@ -4,7 +4,7 @@ import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Rectangle;
-import ru.bmstu.iu9.mathmod.lab2.geom.Point2D;
+import ru.bmstu.iu9.mathmod.lab2.geom.Vector2D;
 import ru.bmstu.iu9.mathmod.lab2.geom.Triangle;
 
 import java.util.*;
@@ -57,7 +57,13 @@ public class RTreeWrapper {
         rTree = rTree.delete(triangleToId.get(triangle), triangle.getMbr().toRTreeRectangle());
     }
 
-    public List<Triangle> findBoundingTriangles(Point2D lookupDot) {
+    public void removeTraingles(Triangle ...triangles) {
+        for(Triangle tr : triangles) {
+            removeTriangle(tr);
+        }
+    }
+
+    public List<Triangle> findBoundingTriangles(Vector2D lookupDot) {
         List<Triangle> foundTriangles = new ArrayList<>();
         Iterable<Entry<Integer, Rectangle>> entries = rTree.search(Geometries.point(lookupDot.x(), lookupDot.y()))
                 .toBlocking()
@@ -73,7 +79,7 @@ public class RTreeWrapper {
         return foundTriangles;
     }
 
-    public Optional<Triangle> findFirstBoundingTriangle(Point2D lookupDot) {
+    public Optional<Triangle> findFirstBoundingTriangle(Vector2D lookupDot) {
         List<Triangle> foundTriangles = findBoundingTriangles(lookupDot);
         return foundTriangles.size() == 0 ? Optional.empty() : Optional.of(foundTriangles.get(0));
     }
@@ -82,7 +88,7 @@ public class RTreeWrapper {
         return rTree.size();
     }
 
-    public static boolean pointInTriangle(Triangle tr, Point2D dot) {
+    public static boolean pointInTriangle(Triangle tr, Vector2D dot) {
         boolean s1, s2, s3;
 
         s1 = pointsSign(dot, tr.p1(), tr.p2()) <= 0.0;
@@ -92,7 +98,7 @@ public class RTreeWrapper {
         return ((s1 == s2) && (s2 == s3));
     }
 
-    private static double pointsSign(Point2D p, Point2D p1, Point2D p2) {
+    private static double pointsSign(Vector2D p, Vector2D p1, Vector2D p2) {
         return (p1.x() - p.x()) * (p2.y() - p.y()) - (p1.y() - p.y()) * (p2.x() - p.x());
     }
 

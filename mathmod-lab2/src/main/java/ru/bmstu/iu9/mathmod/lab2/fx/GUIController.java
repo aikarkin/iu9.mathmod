@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import ru.bmstu.iu9.mathmod.lab2.App;
-import ru.bmstu.iu9.mathmod.lab2.delaunay.DelaunayUtil;
 import ru.bmstu.iu9.mathmod.lab2.delaunay.Triangulation;
 import ru.bmstu.iu9.mathmod.lab2.geom.*;
 import ru.bmstu.iu9.mathmod.lab2.elevation.ElevationPoint;
@@ -40,11 +39,11 @@ public class GUIController {
 
     private ElevationPointsList points;
 
-    private Point2D selectedPoint;
+    private Vector2D selectedPoint;
 
     private PlaneParamsCache planeParamsCache = new PlaneParamsCache();
 
-    private Map<Point2D, Double> heightOfPoint;
+    private Map<Vector2D, Double> heightOfPoint;
 
     private Triangulation triangulation;
 
@@ -86,14 +85,14 @@ public class GUIController {
         for (Triangle tr : triangulation.getTriangles()) {
             for (Edge e : tr.edges()) {
                 drawEdge(ctx, e, Color.BLUE);
+
             }
+            Circle circumscribedCircle = GeometryUtils.getCircumscribedCircle(tr);
+            drawCircle(ctx, circumscribedCircle, Color.RED);
+            drawPoint(ctx, circumscribedCircle.getCenter(), 4.0, Color.YELLOWGREEN);
         }
 
-//        for(Edge e : triangulation.getSuperRectangle().edges()) {
-//            drawEdge(ctx, e, Color.BLUE);
-//        }
-
-        Set<Point2D> superRectPoints = new HashSet<>(Arrays.asList(triangulation.getSuperRectangle().points()));
+        Set<Vector2D> superRectPoints = new HashSet<>(Arrays.asList(triangulation.getSuperRectangle().points()));
 
         triangulation.getTriangles()
                 .stream()
@@ -101,7 +100,7 @@ public class GUIController {
                 .flatMap(tr -> Arrays.stream(tr.edges()))
                 .forEach(e -> drawEdge(ctx, e, Color.WHITE));
 
-        for (Point2D pt : points.getXYProjections()) {
+        for (Vector2D pt : points.getXYProjections()) {
             drawPoint(ctx, pt, 5.0, Color.RED);
         }
 
@@ -129,7 +128,7 @@ public class GUIController {
             return;
         }
         GraphicsContext ctx = canvas.getGraphicsContext2D();
-        Point2D pt = GeometryUtils.point(x, y);
+        Vector2D pt = GeometryUtils.vec2d(x, y);
 
         if (selectedPoint != null) {
             drawPoint(ctx, selectedPoint, Color.BLACK);
@@ -150,7 +149,7 @@ public class GUIController {
         elevationCoordinates.setText(String.format("x: %.2f, y: %.2f, h: %.2f", x, y, h));
     }
 
-    private double calcPointHeight(Triangle tr, Point2D pt) {
+    private double calcPointHeight(Triangle tr, Vector2D pt) {
         Plane plane = new Plane(
                 new ElevationPoint(tr.p1(), heightOfPoint.get(tr.p1())),
                 new ElevationPoint(tr.p2(), heightOfPoint.get(tr.p2())),
@@ -163,12 +162,6 @@ public class GUIController {
         System.err.println(msg);
     }
 
-    private void strokeCircumCircles(GraphicsContext ctx, List<Triangle> triangles, Color color) {
-        for (Triangle tr : triangles) {
-            drawCircle(ctx, DelaunayUtil.getCircumcircleOfTriangle(tr), color);
-        }
-    }
-
     private static void drawEdge(GraphicsContext ctx, Edge e, Color c) {
         drawPoint(ctx, e.first(), Color.BLACK);
         drawPoint(ctx, e.second(), Color.BLACK);
@@ -177,10 +170,7 @@ public class GUIController {
         ctx.strokeLine(e.first().x(), e.first().y(), e.second().x(), e.second().y());
     }
 
-    private static void addLabelForPoint(GraphicsContext ctx, Point2D pt, String label) {
-//        ctx.fillRect(pt.x() - 10, pt.y() - 5, 20.0, 10.0);
-//        ctx.setStroke(new Color(5, 5, 5, 0.2));
-
+    private static void addLabelForPoint(GraphicsContext ctx, Vector2D pt, String label) {
         ctx.setStroke(Color.DARKORANGE);
         ctx.setLineWidth(1.5);
         ctx.setFont(Font.font(null, FontWeight.EXTRA_LIGHT, 14.0));
@@ -189,9 +179,12 @@ public class GUIController {
 
     private static void drawCircle(GraphicsContext ctx, Circle circle, Color color) {
         System.out.println("Drawing circle: " + circle);
-        ctx.setLineWidth(2.0);
+        Vector2D center = circle.getCenter();
+        double r = circle.getRadius();
+
+        ctx.setLineWidth(1.0);
         ctx.setStroke(color);
-        ctx.strokeOval(circle.getCenter().x(), circle.getCenter().y(), 2 * circle.getRadius(), 2 * circle.getRadius());
+        ctx.strokeOval(center.x() - r, center.y() - r, 2.0 * r, 2.0 * r);
     }
 
     private static void strokeEdges(GraphicsContext ctx, List<Edge> edges, Color c) {
@@ -200,12 +193,12 @@ public class GUIController {
         }
     }
 
-    private static void drawPoint(GraphicsContext ctx, Point2D pt, Color c) {
+    private static void drawPoint(GraphicsContext ctx, Vector2D pt, Color c) {
         ctx.setFill(c);
         ctx.fillRect(pt.x() - 1.0, pt.y() - 1.0, 2.0, 2.0);
     }
 
-    private static void drawPoint(GraphicsContext ctx, Point2D pt, double size, Color c) {
+    private static void drawPoint(GraphicsContext ctx, Vector2D pt, double size, Color c) {
         ctx.setFill(c);
         ctx.fillRect(pt.x() - size / 2.0, pt.y() - size / 2.0, size, size);
     }

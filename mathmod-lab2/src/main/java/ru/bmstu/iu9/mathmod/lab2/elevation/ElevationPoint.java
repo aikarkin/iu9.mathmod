@@ -1,7 +1,7 @@
 package ru.bmstu.iu9.mathmod.lab2.elevation;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
-import ru.bmstu.iu9.mathmod.lab2.geom.Point2D;
+import ru.bmstu.iu9.mathmod.lab2.geom.Vector2D;
 
 public class ElevationPoint extends ArrayRealVector {
 
@@ -9,7 +9,7 @@ public class ElevationPoint extends ArrayRealVector {
     private static final int Y_IDX = 1;
     private static final int H_IDX = 2;
 
-    public ElevationPoint(Point2D pt, double h) {
+    public ElevationPoint(Vector2D pt, double h) {
         this(pt.x(), pt.y(), h);
     }
 
@@ -32,7 +32,7 @@ public class ElevationPoint extends ArrayRealVector {
         return this.getEntry(H_IDX);
     }
 
-    public Point2D xyProjection() {
-        return new Point2D(x(), y());
+    public Vector2D xyProjection() {
+        return new Vector2D(x(), y());
     }
 }

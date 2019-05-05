@@ -3,17 +3,17 @@ package ru.bmstu.iu9.mathmod.lab2.geom;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
-public class Point2D extends ArrayRealVector {
+public class Vector2D extends ArrayRealVector {
 
-    public Point2D() {
+    public Vector2D() {
         super(2);
     }
 
-    public Point2D(double x, double y) {
+    public Vector2D(double x, double y) {
         super(new double[]{x, y});
     }
 
-    public Point2D(RealVector vector) {
+    public Vector2D(RealVector vector) {
         this(vector.getEntry(0), vector.getEntry(1));
     }
 

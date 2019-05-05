@@ -8,7 +8,7 @@ public class Rectangle {
     private static final int LTP_IDX = 1;
     private static final int RTP_IDX = 2;
     private static final int RBP_IDX = 3;
-    private Point2D[] points;
+    private Vector2D[] points;
     private double width;
     private double height;
 
@@ -16,43 +16,43 @@ public class Rectangle {
 
     }
 
-    public Rectangle(Point2D lbPoint, double width, double height) {
-        this.points = new Point2D[4];
+    public Rectangle(Vector2D lbPoint, double width, double height) {
+        this.points = new Vector2D[4];
         this.points[LBP_IDX] = lbPoint;
         this.width = width;
         this.height = height;
         calcPoints();
     }
 
-    public void set(Point2D lbPoint, double width, double height) {
+    public void set(Vector2D lbPoint, double width, double height) {
         this.points[LBP_IDX] = lbPoint;
         this.width = width;
         this.height = height;
         this.calcPoints();
     }
 
-    public Point2D getLeftTopPoint() {
+    public Vector2D getLeftTopPoint() {
         return points[LTP_IDX];
     }
 
-    public void setLeftTopPoint(Point2D ltPoint) {
+    public void setLeftTopPoint(Vector2D ltPoint) {
         this.points[LTP_IDX] = ltPoint;
         calcPoints();
     }
 
-    public Point2D[] points() {
+    public Vector2D[] points() {
         return this.points;
     }
 
-    public Point2D getLeftBottomPoint() {
+    public Vector2D getLeftBottomPoint() {
         return points[LBP_IDX];
     }
 
-    public Point2D getRightTopPoint() {
+    public Vector2D getRightTopPoint() {
         return points[RTP_IDX];
     }
 
-    public Point2D getRightBottomPoint() {
+    public Vector2D getRightBottomPoint() {
         return points[RBP_IDX];
     }
 
@@ -92,10 +92,10 @@ public class Rectangle {
     }
 
     private void calcPoints() {
-        Point2D leftBottomPoint = this.points[LBP_IDX];
-        this.points[LTP_IDX] = new Point2D(leftBottomPoint.x(), leftBottomPoint.y() + height);
-        this.points[RTP_IDX] = new Point2D(leftBottomPoint.x() + width, leftBottomPoint.y() + height);
-        this.points[RBP_IDX] = new Point2D(leftBottomPoint.x() + width, leftBottomPoint.y());
+        Vector2D leftBottomPoint = this.points[LBP_IDX];
+        this.points[LTP_IDX] = new Vector2D(leftBottomPoint.x(), leftBottomPoint.y() + height);
+        this.points[RTP_IDX] = new Vector2D(leftBottomPoint.x() + width, leftBottomPoint.y() + height);
+        this.points[RBP_IDX] = new Vector2D(leftBottomPoint.x() + width, leftBottomPoint.y());
     }
 
 

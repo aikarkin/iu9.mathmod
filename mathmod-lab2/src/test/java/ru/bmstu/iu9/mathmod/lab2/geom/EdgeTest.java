@@ -10,9 +10,9 @@ public class EdgeTest {
 
     @BeforeClass
     public void tearUp() {
-        Point2D p1, p2;
-        p1 = new Point2D(1, 1);
-        p2 = new Point2D(2, 2);
+        Vector2D p1, p2;
+        p1 = new Vector2D(1, 1);
+        p2 = new Vector2D(2, 2);
         e1 = new Edge(p1, p2);
         e2 = new Edge(p2, p1);
     }

@@ -57,7 +57,7 @@ public class PlaneParamsCache {
             return detD;
         }
 
-        public double distanceToPoint(Point2D pt) {
+        public double distanceToPoint(Vector2D pt) {
             return (detD + detB * pt.y() - detA * pt.x()) / detC;
         }
     }
