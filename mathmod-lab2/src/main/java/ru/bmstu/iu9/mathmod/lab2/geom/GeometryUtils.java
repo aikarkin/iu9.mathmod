@@ -62,6 +62,23 @@ public class GeometryUtils {
         return new Circle(center, radius);
     }
 
+    public static boolean pointInTriangle(Triangle tr, Vector2D dot) {
+        boolean s1, s2, s3;
+
+        s1 = pointsSign(dot, tr.p1(), tr.p2()) <= 0.0;
+        s2 = pointsSign(dot, tr.p2(), tr.p3()) <= 0.0;
+        s3 = pointsSign(dot, tr.p3(), tr.p1()) <= 0.0;
+
+        return ((s1 == s2) && (s2 == s3));
+    }
+
+    private static double pointsSign(Vector2D p, Vector2D p1, Vector2D p2) {
+        Vector2D vec1 = new Vector2D(p1.subtract(p2));
+        Vector2D vec2 = new Vector2D(p2.subtract(p));
+
+        return signum(pseudoScalar(vec1, vec2));
+    }
+
     public static double scalar(Vector2D v1, Vector2D v2) {
         return v1.x() * v2.x() + v1.y() * v2.y();
     }
