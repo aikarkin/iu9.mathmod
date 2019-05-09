@@ -1,18 +1,31 @@
-import sys
 import csv
 import random as rnd
+from os.path import join
+from typing import List
+
 import numpy as np
-import plotly.offline as py
 import plotly.graph_objs as go
+import plotly.offline as py
+
+DATA_DIR = "./data"
+DATASET_FILE = join(DATA_DIR, "dataset.csv")
+HEADERS = ['area', 'RH', 'temp']
+CLUSTERS_COUNT = 3
+AREA_IDX = 0
+RH_IDX = 1
+TEMP_IDX = 2
+FN_AREA_OF_RH = join(DATA_DIR, "area_of_humidity.html")
+FN_AREA_OF_TEMP = join(DATA_DIR, "area_of_temperature.html")
+FN_AREA_OF_RH_AND_TEMP = join(DATA_DIR, "area_of_humidity_and_temperature.html")
 
 
-def read_points_from_csv(file_name, headers):
-    csv_file = open(file_name, 'r')
+def read_points_from_csv(filename: str) -> List[np.ndarray]:
+    csv_file = open(filename, 'r')
     csv_reader = csv.DictReader(csv_file)
     pts = []
     for row in csv_reader:
         vec = []
-        for header in headers:
+        for header in HEADERS:
             vec.append(float(row[header]))
         pts.append(np.array(vec))
     csv_file.close()
@@ -20,40 +33,14 @@ def read_points_from_csv(file_name, headers):
     return pts
 
 
-def save_clusters(file_name, clusters, headers, main_header_idx):
-    csv_file = open(file_name, 'w', newline='\n')
-    csv_headers = []
-    k = len(clusters)
-    headers_len = len(headers)
-
-    csv_headers.append(headers[main_header_idx])
-
-    for hi in range(headers_len):
-        if hi is not main_header_idx:
-            for ci in range(k):
-                csv_headers.append('%s (C#%d)' % (headers[hi], ci + 1))
-
-    writer = csv.DictWriter(csv_file, fieldnames=csv_headers)
-    writer.writeheader()
-
-    for ci in range(k):
-        row_mapping = {}
-        for pt in clusters[ci]:
-            for hi in range(headers_len):
-                if hi == main_header_idx:
-                    row_mapping[headers[hi]] = pt[hi]
-                else:
-                    row_mapping['%s (C#%d)' % (headers[hi], ci + 1)] = pt[hi]
-            writer.writerow(row_mapping)
-
-
-def draw_clusters_3d(clusters, headers, x_axis_idx, y_axis_idx, z_axis_idx):
+def draw_clusters_3d(clusters: List[List[np.ndarray]], fname: str) \
+        -> None:
     traces = []
     for ci in range(len(clusters)):
         cluster = clusters[ci]
-        x_axis = list(map(lambda pt: pt[x_axis_idx], cluster))
-        y_axis = list(map(lambda pt: pt[y_axis_idx], cluster))
-        z_axis = list(map(lambda pt: pt[z_axis_idx], cluster))
+        x_axis = list(map(lambda pt: pt[0], cluster))
+        y_axis = list(map(lambda pt: pt[1], cluster))
+        z_axis = list(map(lambda pt: pt[2], cluster))
 
         traces.append(
             go.Scatter3d(
@@ -77,28 +64,28 @@ def draw_clusters_3d(clusters, headers, x_axis_idx, y_axis_idx, z_axis_idx):
         ),
         scene=dict(
             xaxis=dict(
-                title=headers[x_axis_idx]
+                title=HEADERS[0]
             ),
             yaxis=dict(
-                title=headers[y_axis_idx]
+                title=HEADERS[1]
             ),
             zaxis=dict(
-                title=headers[z_axis_idx]
+                title=HEADERS[2]
             )
         )
     )
 
     fig = go.Figure(data=traces, layout=layout)
-    py.plot(fig, filename="clusters-3d")
+    py.plot(fig, filename=fname)
 
 
-def draw_clusters(clusters, headers, x_axis_idx, y_axis_idx):
+def draw_clusters_2d(clusters: List[List[np.ndarray]], fname: str) -> None:
     traces = []
 
     for ci in range(len(clusters)):
         cluster = clusters[ci]
-        x_axis = list(map(lambda pt: pt[x_axis_idx], cluster))
-        y_axis = list(map(lambda pt: pt[y_axis_idx], cluster))
+        x_axis = list(map(lambda pt: pt[0], cluster))
+        y_axis = list(map(lambda pt: pt[1], cluster))
 
         traces.append(
             go.Scatter(
@@ -113,20 +100,20 @@ def draw_clusters(clusters, headers, x_axis_idx, y_axis_idx):
         title="",
         hovermode="closest",
         xaxis=dict(
-            title=headers[x_axis_idx],
+            title=HEADERS[0],
             zeroline=False
         ),
         yaxis=dict(
-            title=headers[y_axis_idx],
+            title=HEADERS[1],
             zeroline=False
         )
     )
 
     fig = go.Figure(data=traces, layout=layout)
-    py.plot(fig, filename="basic-scatter")
+    py.plot(fig, filename=fname)
 
 
-def find_center_of_mass(pts):
+def center_of_mass(pts: List[np.ndarray]) -> np.ndarray:
     mass_ctr = pts[0]
     n = len(pts)
 
@@ -136,7 +123,7 @@ def find_center_of_mass(pts):
     return mass_ctr / n
 
 
-def kmeans_method(pts, k):
+def kmeans_method(pts: List[np.ndarray], k: int) -> List[List[np.ndarray]]:
     ctr = rnd.sample(pts, k)
     distances = [0.0] * k
     new_distances = [1.0] * k
@@ -160,24 +147,28 @@ def kmeans_method(pts, k):
                 groups[ci].append(pt)
 
         for j in range(k):
-            ctr[j] = find_center_of_mass(groups[j])
+            ctr[j] = center_of_mass(groups[j])
 
     return groups
 
 
+def clusterize_and_draw_2d(pts: List[np.ndarray], xi: int, yi: int, k: int, fname: str) -> None:
+    chart_pts = list(map(lambda pt: np.array([pt[xi], pt[yi]]), pts))
+    clusters = kmeans_method(chart_pts, k)
+    draw_clusters_2d(clusters, fname)
+
+
+def clusterize_and_draw_3d(pts: List[np.ndarray], xi: int, yi: int, zi: int, k: int, fname: str) -> None:
+    chart_pts = list(map(lambda pt: np.array([pt[xi], pt[yi], pt[zi]]), pts))
+    clusters = kmeans_method(chart_pts, k)
+    draw_clusters_3d(clusters, fname)
+
+
 def main():
-    if len(sys.argv) < 3:
-        raise Exception("Invalid number of arguments")
-
-    fin = sys.argv[1]
-    # fout = sys.argv[2]
-    clusters_count = int(sys.argv[2])
-    headers = ['area', 'RH', 'temp']
-    pts = read_points_from_csv(fin, headers)
-
-    clusters = kmeans_method(pts, clusters_count)
-    # save_clusters(fout, clusters, headers, 2)
-    draw_clusters_3d(clusters, headers, 0, 1, 2)
+    pts = read_points_from_csv(DATASET_FILE)
+    clusterize_and_draw_2d(pts, AREA_IDX, RH_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH)
+    clusterize_and_draw_2d(pts, AREA_IDX, TEMP_IDX, CLUSTERS_COUNT, FN_AREA_OF_TEMP)
+    clusterize_and_draw_3d(pts, AREA_IDX, RH_IDX, TEMP_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH_AND_TEMP)
 
 
 if __name__ == '__main__':
