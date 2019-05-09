@@ -7,7 +7,16 @@ DATA_DIR = "data/"
 DATASET_1 = DATA_DIR + "dataset-metro-1.csv"
 DATASET_2 = DATA_DIR + "dataset-metro-2.csv"
 DATASET_3 = DATA_DIR + "dataset-metro-3.csv"
-TICKET_COSTS = [28, 150, 210]
+
+# dataset headers:
+R_FIELDS = ["rA0", "rA1", "rB0", "rB1", "rC0", "rC1"]
+TH_FIELDS = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
+II_FIELDS = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
+IIT_FIELDS = ["IITA0", "IITA1", "IITB0", "IITB1", "IITC0", "IITC1"]
+
+TICKET_COSTS = [30, 150, 250]
+TICKET_NAMES = ["F", "D", "L"]
+
 ALPHA = 0.1
 
 
@@ -106,15 +115,10 @@ def group_dataset_columns(column_x: list, column_y: list, func: callable, initia
 
 
 def task1():
-    # прошли xi2 [x]
-    r_fields = ["rA0", "rA1", "rB0", "rB1", "rC0", "rC1"]
-    # вошли xi1 [y]
-    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
-
     dataset = read_dataset(DATASET_1)
 
-    th_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), th_fields, [])
-    r_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), r_fields, [])
+    th_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), TH_FIELDS, [])
+    r_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), R_FIELDS, [])
 
     sample_vec = list(zip(r_values, th_values))
     sample_vec.sort(key=lambda el: el[0])
@@ -122,20 +126,11 @@ def task1():
     xi2 = list(map(lambda t: t[0], sample_vec))
     (alpha, beta) = coefficients(xi2, xi1)
     xi1_star = list(map(lambda th: estimated_func(alpha, beta, th), sorted(th_values)))
-    print("\txi2: %s" % xi2)
-    print("\txi1: %s" % xi1)
-    print("\txi1_star: %s" % xi1_star)
     print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
     print("\tKolmagorov-Smirnov Test on xi1 = f(xi2): %s" % two_samples_ks_test(xi1, xi1_star, ALPHA))
 
 
 def task2():
-    # xi1 = f(xi3)
-    # купленные билеты (xi3) [x]
-    ii_fields = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
-    # вошедшие люди (xi1) [y]
-    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
-
     dataset = read_dataset(DATASET_2)
 
     def aggregate_func(acc: Tuple[list, list], fields: iter) -> Tuple[list, list]:
@@ -149,7 +144,7 @@ def task2():
 
     ii_values, th_values = reduce(
         aggregate_func,
-        zip(ii_fields, th_fields),
+        zip(II_FIELDS, TH_FIELDS),
         ([], []),
     )
     sample_vec = list(zip(ii_values, th_values))
@@ -159,19 +154,11 @@ def task2():
     xi3 = list(map(lambda t: t[0], sample_vec))
     (alpha, beta) = coefficients(xi3, xi1)
     xi1_star = list(map(lambda ii: estimated_func(alpha, beta, ii), xi3))
-    print("\txi3: %s" % xi3)
-    print("\txi1: %s" % xi1)
-    print("\txi1*: %s" % xi1_star)
     print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
     print("\tKolmagorov-Smirnov Test on xi1 = f(xi3): " + str(two_samples_ks_test(xi1, xi1_star, ALPHA)))
 
 
 def task3():
-    # к-во билетов типа T (xi4, xi5, xi6) [x]
-    iit_fields = ["IITA0", "IITA1", "IITB0", "IITB1", "IITC0", "IITC1"]
-    # общее к-во кулпенных билетов (xi3) [y]
-    ii_fields = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
-
     dataset = read_dataset(DATASET_3)
 
     def aggregate_func(acc: Tuple[list, list], fields: iter) -> Tuple[list, list]:
@@ -185,7 +172,7 @@ def task3():
 
     ii_values, iit_values = reduce(
         aggregate_func,
-        zip(ii_fields, iit_fields),
+        zip(II_FIELDS, IIT_FIELDS),
         ([], []),
     )
 
@@ -203,23 +190,13 @@ def task3():
         (alpha, beta) = coefficients(xik, xi3)
         xi3_star = list(map(lambda t: estimated_func(alpha, beta, t), xik))
 
-        print("\txi%d: %s" % (ti + 4, xik))
-        print("\txi3: %s" % xi3)
-        print("\txi3_star: %s" % xi3_star)
-
+        print("\t-> Ticket %s:" % TICKET_NAMES[ti])
         print("\talpha=%.3f, beta=%.3f" % (alpha, beta))
-        print(
-            "\tKolmagorov-Smirnov Test on xi3 = f(xi{}): {}".format(
-                ti + 4,
-                two_samples_ks_test(xi3_star, xi3, ALPHA)
-            )
-        )
-        print("\t" + "-" * 6)
+        print("\tKolmagorov-Smirnov Test on xi3 = f(xi%d): %s" % (ti + 4, two_samples_ks_test(xi3_star, xi3, ALPHA)))
+        print("\t" + "-" * 12)
 
 
 def task4():
-    iit_fields = ["IITA0", "IITA1", "IITB0", "IITB1", "IITC0", "IITC1"]
-
     dataset = read_dataset(DATASET_3)
     tickets_count = list(
         map(
@@ -229,7 +206,7 @@ def task4():
                     dataset[station],
                     0
                 ),
-                iit_fields,
+                IIT_FIELDS,
                 0
             ),
             range(3)
