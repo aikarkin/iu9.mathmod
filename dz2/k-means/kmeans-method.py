@@ -8,33 +8,62 @@ import plotly.graph_objs as go
 import plotly.offline as py
 
 DATA_DIR = "./data"
-DATASET_FILE = join(DATA_DIR, "dataset.csv")
-HEADERS = ['area', 'RH', 'temp']
-CLUSTERS_COUNT = 3
-AREA_IDX = 0
-RH_IDX = 1
-TEMP_IDX = 2
+DATASET_FILE = join(DATA_DIR, "forestfires.csv")
 FN_AREA_OF_RH = join(DATA_DIR, "area_of_humidity.html")
 FN_AREA_OF_TEMP = join(DATA_DIR, "area_of_temperature.html")
 FN_AREA_OF_RH_AND_TEMP = join(DATA_DIR, "area_of_humidity_and_temperature.html")
+ABBREV_DICT = {
+    "month": {
+        "jan": 0,
+        "feb": 1,
+        "mar": 2,
+        "apr": 3,
+        "may": 4,
+        "jun": 5,
+        "jul": 6,
+        "aug": 7,
+        "sep": 8,
+        "oct": 9,
+        "nov": 10,
+        "dec": 11,
+    },
+    "day": {
+        "sun": 0,
+        "mon": 1,
+        "tue": 2,
+        "wed": 3,
+        "thu": 4,
+        "fri": 5,
+        "sat": 6,
+    }
+}
+
+HEADERS = []
+CLUSTERS_COUNT = 3
+AREA_IDX = 12
+RH_IDX = 9
+TEMP_IDX = 8
 
 
 def read_points_from_csv(filename: str) -> List[np.ndarray]:
+    HEADERS.clear()
     csv_file = open(filename, 'r')
     csv_reader = csv.DictReader(csv_file)
+    rows = list(csv_reader)
+    HEADERS.extend(rows[0].keys())
     pts = []
-    for row in csv_reader:
+    for row in rows:
         vec = []
         for header in HEADERS:
-            vec.append(float(row[header]))
+            cell_val = row[header].strip()
+            vec.append(float(ABBREV_DICT[header][cell_val] if header in ABBREV_DICT else cell_val))
         pts.append(np.array(vec))
     csv_file.close()
 
     return pts
 
 
-def draw_clusters_3d(clusters: List[List[np.ndarray]], fname: str) \
-        -> None:
+def draw_clusters_3d(clusters: List[List[np.ndarray]], xi: int, yi: int, zi: int, fname: str) -> None:
     traces = []
     for ci in range(len(clusters)):
         cluster = clusters[ci]
@@ -64,13 +93,13 @@ def draw_clusters_3d(clusters: List[List[np.ndarray]], fname: str) \
         ),
         scene=dict(
             xaxis=dict(
-                title=HEADERS[0]
+                title=HEADERS[xi]
             ),
             yaxis=dict(
-                title=HEADERS[1]
+                title=HEADERS[yi]
             ),
             zaxis=dict(
-                title=HEADERS[2]
+                title=HEADERS[zi]
             )
         )
     )
@@ -79,7 +108,7 @@ def draw_clusters_3d(clusters: List[List[np.ndarray]], fname: str) \
     py.plot(fig, filename=fname)
 
 
-def draw_clusters_2d(clusters: List[List[np.ndarray]], fname: str) -> None:
+def draw_clusters_2d(clusters: List[List[np.ndarray]], xi: int, yi: int, fname: str) -> None:
     traces = []
 
     for ci in range(len(clusters)):
@@ -100,11 +129,11 @@ def draw_clusters_2d(clusters: List[List[np.ndarray]], fname: str) -> None:
         title="",
         hovermode="closest",
         xaxis=dict(
-            title=HEADERS[0],
+            title=HEADERS[xi],
             zeroline=False
         ),
         yaxis=dict(
-            title=HEADERS[1],
+            title=HEADERS[yi],
             zeroline=False
         )
     )
@@ -155,20 +184,20 @@ def kmeans_method(pts: List[np.ndarray], k: int) -> List[List[np.ndarray]]:
 def clusterize_and_draw_2d(pts: List[np.ndarray], xi: int, yi: int, k: int, fname: str) -> None:
     chart_pts = list(map(lambda pt: np.array([pt[xi], pt[yi]]), pts))
     clusters = kmeans_method(chart_pts, k)
-    draw_clusters_2d(clusters, fname)
+    draw_clusters_2d(clusters, xi, yi, fname)
 
 
 def clusterize_and_draw_3d(pts: List[np.ndarray], xi: int, yi: int, zi: int, k: int, fname: str) -> None:
     chart_pts = list(map(lambda pt: np.array([pt[xi], pt[yi], pt[zi]]), pts))
     clusters = kmeans_method(chart_pts, k)
-    draw_clusters_3d(clusters, fname)
+    draw_clusters_3d(clusters, xi, yi, zi, fname)
 
 
 def main():
     pts = read_points_from_csv(DATASET_FILE)
-    clusterize_and_draw_2d(pts, AREA_IDX, RH_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH)
-    clusterize_and_draw_2d(pts, AREA_IDX, TEMP_IDX, CLUSTERS_COUNT, FN_AREA_OF_TEMP)
-    clusterize_and_draw_3d(pts, AREA_IDX, RH_IDX, TEMP_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH_AND_TEMP)
+    clusterize_and_draw_2d(pts, RH_IDX, AREA_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH)
+    clusterize_and_draw_2d(pts, TEMP_IDX, AREA_IDX, CLUSTERS_COUNT, FN_AREA_OF_TEMP)
+    clusterize_and_draw_3d(pts, RH_IDX, TEMP_IDX, AREA_IDX, CLUSTERS_COUNT, FN_AREA_OF_RH_AND_TEMP)
 
 
 if __name__ == '__main__':
