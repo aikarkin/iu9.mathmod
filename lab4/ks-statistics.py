@@ -36,8 +36,8 @@ def coefficients(sample_x: list, sample_y: list):
     avg_log_y = average(sample_log_y)
     sd_log_x = standard_deviation(sample_log_x, avg_log_x)
     sd_log_y = standard_deviation(sample_log_y, avg_log_y)
-    beta = sqrt(sd_log_x ** 2 / sd_log_y ** 2)
-    alpha = exp(avg_log_x - beta * avg_log_y)
+    beta = sqrt(sd_log_y ** 2 / sd_log_x ** 2)
+    alpha = exp(avg_log_y - beta * avg_log_x)
     return alpha, beta
 
 
@@ -66,7 +66,7 @@ def two_samples_ks_test(sample_x: list, sample_y: list, approvement_level: float
 
 
 def read_dataset(fname):
-    csvfile = open(fname, 'r')
+    csvfile = open(fname, "r")
     reader = list(DictReader(csvfile))
     dataset = {}
     fieldnames = list(next(iter(reader)).keys())
@@ -106,85 +106,115 @@ def group_dataset_columns(column_x: list, column_y: list, func: callable, initia
 
 
 def task1():
-    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
+    # прошли xi2 [x]
     r_fields = ["rA0", "rA1", "rB0", "rB1", "rC0", "rC1"]
+    # вошли xi1 [y]
+    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
 
     dataset = read_dataset(DATASET_1)
 
-    for i in range(len(th_fields)):
-        th_values = list(map(lambda el: el[1], dataset[th_fields[i]]))
-        r_values = list(map(lambda el: el[1], dataset[r_fields[i]]))
-        sample_vec = list(zip(th_values, r_values))
-        sample_vec.sort(key=lambda el: el[0])
+    th_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), th_fields, [])
+    r_values = reduce(lambda acc, field: acc + list(map(lambda el: el[1], dataset[field])), r_fields, [])
 
-        xi1 = list(map(lambda t: t[1], sample_vec))
-        (alpha, beta) = coefficients(th_values, r_values)
-        print("alpha: %.3f, beta: %.3f" % (alpha, beta))
-        xi2 = list(map(lambda th: estimated_func(alpha, beta, th), sorted(th_values)))
-        print("xi1: %s" % xi1)
-        print("xi2: %s" % xi2)
-        print("Kolmagorov-Smirnov Test on (xi1, xi2): " + str(two_samples_ks_test(xi1, xi2, ALPHA)))
-        print()
+    sample_vec = list(zip(r_values, th_values))
+    sample_vec.sort(key=lambda el: el[0])
+    xi1 = list(map(lambda t: t[1], sample_vec))
+    xi2 = list(map(lambda t: t[0], sample_vec))
+    (alpha, beta) = coefficients(xi2, xi1)
+    xi1_star = list(map(lambda th: estimated_func(alpha, beta, th), sorted(th_values)))
+    print("\txi2: %s" % xi2)
+    print("\txi1: %s" % xi1)
+    print("\txi1_star: %s" % xi1_star)
+    print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
+    print("\tKolmagorov-Smirnov Test on xi1 = f(xi2): %s" % two_samples_ks_test(xi1, xi1_star, ALPHA))
 
 
 def task2():
-    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
+    # xi1 = f(xi3)
+    # купленные билеты (xi3) [x]
     ii_fields = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
+    # вошедшие люди (xi1) [y]
+    th_fields = ["thA0", "thA1", "thB0", "thB1", "thC0", "thC1"]
 
     dataset = read_dataset(DATASET_2)
 
-    for i in range(len(th_fields)):
-        th_values, r_values = group_dataset_columns(
-            dataset[th_fields[i]],
-            dataset[ii_fields[i]],
-            lambda acc, el: acc + el,
+    def aggregate_func(acc: Tuple[list, list], fields: iter) -> Tuple[list, list]:
+        grouped_values = group_dataset_columns(
+            dataset[fields[1]],
+            dataset[fields[0]],
+            lambda el_sum, el: el_sum + el,
             0
         )
-        sample_vec = list(zip(th_values, r_values))
-        sample_vec.sort(key=lambda el: el[0])
+        return acc[0] + grouped_values[0], acc[1] + grouped_values[1]
 
-        xi1 = list(map(lambda t: t[1], sample_vec))
-        (alpha, beta) = coefficients(th_values, r_values)
-        print("alpha: %.3f, beta: %.3f" % (alpha, beta))
-        xi2 = list(map(lambda th: estimated_func(alpha, beta, th), sorted(th_values)))
-        print("xi1: %s" % xi1)
-        print("xi2: %s" % xi2)
-        print("Kolmagorov-Smirnov Test on (xi1, xi2): " + str(two_samples_ks_test(xi1, xi2, ALPHA)))
-        print()
+    ii_values, th_values = reduce(
+        aggregate_func,
+        zip(ii_fields, th_fields),
+        ([], []),
+    )
+    sample_vec = list(zip(ii_values, th_values))
+    sample_vec.sort(key=lambda el: el[0])
+
+    xi1 = list(map(lambda t: t[1], sample_vec))
+    xi3 = list(map(lambda t: t[0], sample_vec))
+    (alpha, beta) = coefficients(xi3, xi1)
+    xi1_star = list(map(lambda ii: estimated_func(alpha, beta, ii), xi3))
+    print("\txi3: %s" % xi3)
+    print("\txi1: %s" % xi1)
+    print("\txi1*: %s" % xi1_star)
+    print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
+    print("\tKolmagorov-Smirnov Test on xi1 = f(xi3): " + str(two_samples_ks_test(xi1, xi1_star, ALPHA)))
 
 
 def task3():
-    ii_fields = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
+    # к-во билетов типа T (xi4, xi5, xi6) [x]
     iit_fields = ["IITA0", "IITA1", "IITB0", "IITB1", "IITC0", "IITC1"]
+    # общее к-во кулпенных билетов (xi3) [y]
+    ii_fields = ["IIA0", "IIA1", "IIB0", "IIB1", "IIC0", "IIC1"]
 
     dataset = read_dataset(DATASET_3)
-    for i in range(len(ii_fields)):
-        grouped_columns: Tuple[List[int], List[List]] = group_dataset_columns(
-            dataset[ii_fields[i]],
-            dataset[iit_fields[i]],
-            lambda acc, el: acc + [el],
+
+    def aggregate_func(acc: Tuple[list, list], fields: iter) -> Tuple[list, list]:
+        grouped_values = group_dataset_columns(
+            dataset[fields[0]],
+            dataset[fields[1]],
+            lambda ls, el: ls + [el],
             []
         )
-        (ii_values, iit_values) = grouped_columns
-        sample_vec: List[Tuple[int, list]] = list(zip(ii_values, iit_values))
+        return acc[0] + grouped_values[0], acc[1] + grouped_values[1]
+
+    ii_values, iit_values = reduce(
+        aggregate_func,
+        zip(ii_fields, iit_fields),
+        ([], []),
+    )
+
+    y_values = ii_values
+
+    for ti in range(3):
+        x_values = list(map(lambda el: el[ti], iit_values))
+
+        sample_vec: List[Tuple[int, list]] = list(zip(x_values, y_values))
         sample_vec.sort(key=lambda el: el[0])
-        tickets_count = len(sample_vec[0][1])
-        xi3 = list(map(lambda t: t[0], sample_vec))
-        for ti in range(tickets_count):
-            xi = list(map(lambda t: t[1][ti], sample_vec))
-            (alpha, beta) = coefficients(xi3, xi)
-            xi_star = list(map(lambda t: estimated_func(alpha, beta, t), xi3))
-            print(
-                "Kolmagorov-Smirnov Test on {} = psi({}_{}): {}".format(
-                    ii_fields[i],
-                    iit_fields[i],
-                    ti + 1,
-                    two_samples_ks_test(xi, xi_star, ALPHA)
-                )
+
+        xik = list(map(lambda t: t[0], sample_vec))
+        xi3 = list(map(lambda t: t[1], sample_vec))
+
+        (alpha, beta) = coefficients(xik, xi3)
+        xi3_star = list(map(lambda t: estimated_func(alpha, beta, t), xik))
+
+        print("\txi%d: %s" % (ti + 4, xik))
+        print("\txi3: %s" % xi3)
+        print("\txi3_star: %s" % xi3_star)
+
+        print("\talpha=%.3f, beta=%.3f" % (alpha, beta))
+        print(
+            "\tKolmagorov-Smirnov Test on xi3 = f(xi{}): {}".format(
+                ti + 4,
+                two_samples_ks_test(xi3_star, xi3, ALPHA)
             )
-            print("alpha=%.3f, beta=%.3f" % (alpha, beta))
-            print()
-        print('#' * 60)
+        )
+        print("\t" + "-" * 6)
 
 
 def task4():
@@ -212,15 +242,17 @@ def task4():
         range(3),
         0
     ) / total_tickets
-    print("avg cost: %.3f" % avg_cost)
+    print("\tavg cost: %.3f" % avg_cost)
 
 
 def main():
-    # task1()
-    # task2()
-    # task3()
-    task4()
+    tasks = [task1, task2, task3, task4]
+
+    for i in range(len(tasks)):
+        print("\nTask %d:\n" % (i + 1))
+        tasks[i]()
+        print("\n" + "#" * 50)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
