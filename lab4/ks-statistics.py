@@ -127,7 +127,7 @@ def task1():
     (alpha, beta) = coefficients(xi2, xi1)
     xi1_star = list(map(lambda th: estimated_func(alpha, beta, th), sorted(th_values)))
     print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
-    print("\tKolmagorov-Smirnov Test on xi1 = f(xi2): %s" % two_samples_ks_test(xi1, xi1_star, ALPHA))
+    print("\tKolmogorov-Smirnov Test on xi1 = f(xi2): %s" % two_samples_ks_test(xi1, xi1_star, ALPHA))
 
 
 def task2():
@@ -155,7 +155,7 @@ def task2():
     (alpha, beta) = coefficients(xi3, xi1)
     xi1_star = list(map(lambda ii: estimated_func(alpha, beta, ii), xi3))
     print("\talpha: %.3f, beta: %.3f" % (alpha, beta))
-    print("\tKolmagorov-Smirnov Test on xi1 = f(xi3): " + str(two_samples_ks_test(xi1, xi1_star, ALPHA)))
+    print("\tKolmogorov-Smirnov Test on xi1 = f(xi3): " + str(two_samples_ks_test(xi1, xi1_star, ALPHA)))
 
 
 def task3():
@@ -192,7 +192,7 @@ def task3():
 
         print("\t-> Ticket %s:" % TICKET_NAMES[ti])
         print("\talpha=%.3f, beta=%.3f" % (alpha, beta))
-        print("\tKolmagorov-Smirnov Test on xi3 = f(xi%d): %s" % (ti + 4, two_samples_ks_test(xi3_star, xi3, ALPHA)))
+        print("\tKolmogorov-Smirnov Test on xi3 = f(xi%d): %s" % (ti + 4, two_samples_ks_test(xi3_star, xi3, ALPHA)))
         print("\t" + "-" * 12)
 
 
